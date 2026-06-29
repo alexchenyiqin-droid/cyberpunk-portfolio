@@ -1,0 +1,14 @@
+# 依赖
+node_modules/
+
+# 构建产物（Vercel 会自动构建，无需提交）
+dist/
+
+# 编辑器 / 系统
+.DS_Store
+*.local
+.vscode/
+.idea/
+
+# Vercel 本地
+.vercel/
