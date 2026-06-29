@@ -12,8 +12,8 @@
  *   - trackPageView(path)：SPA 路由切换时上报 PV（单页应用必须，否则只统计到首屏）
  */
 
-// ⚠️ 替换为你的真实百度统计 ID（在 tongji.baidu.com 获取）
-export const BAIDU_ID = 'YOUR_BAIDU_TONGJI_ID'
+// ✅ 百度统计 ID（在 tongji.baidu.com 获取）
+export const BAIDU_ID = '20f59288aa643e0a247d90aa93613d3f'
 
 // 是否已成功加载百度统计脚本
 let initialized = false
