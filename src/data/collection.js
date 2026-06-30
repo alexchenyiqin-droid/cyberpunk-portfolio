@@ -11,7 +11,28 @@
  *   date      日期
  *   source    来源说明
  */
-export const collections = []
+export const collections = [
+  {
+    id: 'image-001',
+    type: 'image',
+    title: '丫挺燥的',
+    desc: '中山装·单块失真·红光灌顶。舞台正中的噪音宣言。大王：丫挺燥的。',
+    url: '/collection/stage-red-guitar.jpg',
+    icon: '🎸',
+    date: '2026-06-30',
+    source: '大王相册',
+  },
+  {
+    id: 'video-001',
+    type: 'video',
+    title: '丫挺燥的 —— 现场',
+    desc: '同场演出实录。鼓点密集，吉他轰鸣切齿，红光里失真拉满。',
+    url: '/collection/video-001.mp4',
+    icon: '📹',
+    date: '2026-06-30',
+    source: '微信',
+  },
+]
 
 export const categories = {
   tool: { label: '工具与自动化', icon: '🛠️', subtitle: '重剑无锋,一点就通' },
