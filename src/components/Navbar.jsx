@@ -4,7 +4,8 @@ const LINKS = [
   { id: 'about', label: '关于', code: '/01' },
   { id: 'projects', label: '项目', code: '/02' },
   { id: 'blog', label: '博客', code: '/03' },
-  { id: 'contact', label: '联系', code: '/04' },
+  { id: 'collection', label: '收藏', code: '/04' },
+  { id: 'contact', label: '联系', code: '/05' },
 ]
 
 export default function Navbar({ name }) {

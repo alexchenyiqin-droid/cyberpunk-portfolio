@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Projects from './components/Projects'
 import Blog from './components/Blog'
+import Collection from './components/Collection'
 import Contact from './components/Contact'
 import BlogPost from './pages/BlogPost'
 
@@ -20,6 +21,7 @@ function Home() {
         <About />
         <Projects />
         <Blog />
+        <Collection />
         <Contact />
       </main>
     </>
