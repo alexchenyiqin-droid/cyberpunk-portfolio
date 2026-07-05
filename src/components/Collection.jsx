@@ -110,7 +110,7 @@ export default function Collection() {
                           <a
                             href={item.url}
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             className="flex items-center gap-1 text-[11px] text-slate-500 transition-colors hover:text-neon-pink"
                           >
                             <ExternalIcon className="h-3.5 w-3.5" />

@@ -28,7 +28,7 @@ export default function Contact() {
                   key={s.name}
                   href={s.href}
                   target={s.icon === 'mail' ? undefined : '_blank'}
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="group flex items-center gap-3 rounded-sm border border-void-600 bg-void-700/40 p-4 transition-all hover:border-neon-pink/50 hover:bg-void-700/70 hover:shadow-neon-pink"
                 >
                   <span className="flex h-10 w-10 items-center justify-center rounded-sm border border-void-600 bg-void-800 text-neon-cyan transition-colors group-hover:border-neon-cyan/50 group-hover:text-neon-pink">

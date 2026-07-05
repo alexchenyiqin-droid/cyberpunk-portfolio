@@ -91,9 +91,15 @@ export default function BlogPost() {
                 </code>
               )
             },
-            a: ({ node, ...props }) => (
-              <a className="text-neon-cyan underline underline-offset-2 hover:text-neon-pink" {...props} />
-            ),
+            a: ({ node, href, ...props }) => {
+              // 阻止 javascript: / data: 等危险协议
+              const safe = /^(https?:|\/|#|mailto:)/.test(href || '')
+              return safe ? (
+                <a href={href} target="_blank" rel="noopener noreferrer" className="text-neon-cyan underline underline-offset-2 hover:text-neon-pink" {...props} />
+              ) : (
+                <span className="text-neon-cyan underline underline-offset-2 hover:text-neon-pink" {...props} />
+              )
+            },
           }}
         >
           {post.content}

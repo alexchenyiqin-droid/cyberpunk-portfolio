@@ -59,7 +59,7 @@ export default function Projects() {
                       <a
                         href={project.demo}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-sm text-slate-400 transition-colors hover:text-neon-cyan"
                       >
                         <ExternalIcon className="h-4 w-4" /> 演示
@@ -69,7 +69,7 @@ export default function Projects() {
                       <a
                         href={project.repo}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-sm text-slate-400 transition-colors hover:text-neon-pink"
                       >
                         <GithubIcon className="h-4 w-4" /> 源码
