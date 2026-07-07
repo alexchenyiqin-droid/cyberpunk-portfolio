@@ -28,10 +28,10 @@ export default function Hero() {
       </div>
 
       {/* 霓虹辉光雾 —— 四色错落闪烁，远处城市招牌感 */}
-      <div className="animate-flicker pointer-events-none absolute -left-32 top-1/4 h-72 w-72 rounded-full bg-neon-pink/20 blur-[120px]" />
-      <div className="animate-flicker-fast pointer-events-none absolute -right-32 bottom-1/4 h-72 w-72 rounded-full bg-neon-cyan/20 blur-[120px]" />
-      <div className="animate-flicker-slow pointer-events-none absolute left-1/3 top-0 h-64 w-64 rounded-full bg-neon-purple/15 blur-[120px]" />
-      <div className="animate-flicker pointer-events-none absolute right-1/4 top-1/3 h-56 w-56 rounded-full bg-neon-yellow/10 blur-[120px]" />
+      <div className="animate-flicker pointer-events-none absolute -left-32 top-1/4 h-72 w-72 rounded-full bg-neon-pink/35 blur-[100px]" />
+      <div className="animate-flicker-fast pointer-events-none absolute -right-32 bottom-1/4 h-72 w-72 rounded-full bg-neon-cyan/35 blur-[100px]" />
+      <div className="animate-flicker-slow pointer-events-none absolute left-1/3 top-0 h-64 w-64 rounded-full bg-neon-purple/30 blur-[100px]" />
+      <div className="animate-flicker pointer-events-none absolute right-1/4 top-1/3 h-56 w-56 rounded-full bg-neon-yellow/25 blur-[100px]" />
 
       <div className="container-base relative z-10">
         {/* 终端状态行 */}

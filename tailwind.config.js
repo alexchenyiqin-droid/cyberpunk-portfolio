@@ -37,7 +37,7 @@ export default {
         'scan': 'scan 6s linear infinite',
         'float': 'float 6s ease-in-out infinite',
         'pulse-neon': 'pulseNeon 2s ease-in-out infinite',
-        'grid-flow': 'gridFlow 3s linear infinite',
+        'grid-flow': 'gridFlow 1.2s linear infinite',
         'neon-breath': 'neonBreath 5s ease-in-out infinite',
       },
       keyframes: {
@@ -62,8 +62,8 @@ export default {
           '100%': { backgroundPosition: '0 40px' },
         },
         neonBreath: {
-          '0%, 100%': { opacity: '0.35' },
-          '50%': { opacity: '0.75' },
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '1' },
         },
       },
     },

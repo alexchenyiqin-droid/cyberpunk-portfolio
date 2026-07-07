@@ -38,12 +38,12 @@ export default function App() {
         className="pointer-events-none fixed inset-0 z-[98]"
         style={{ boxShadow: 'inset 0 0 200px 40px rgba(0,0,0,0.6)' }}
       />
-      {/* 视口边缘霓虹光晕 —— 粉青双色缓慢呼吸，模拟霓虹灯管边框 */}
+      {/* 视口边缘霓虹光晕 —— 粉青双色明显呼吸，模拟霓虹灯管边框 */}
       <div
         className="animate-neon-breath pointer-events-none fixed inset-0 z-[99]"
         style={{
           boxShadow:
-            'inset 0 0 140px 6px rgba(255,46,136,0.22), inset 0 0 140px 6px rgba(0,255,245,0.12)',
+            'inset 0 0 200px 12px rgba(255,46,136,0.4), inset 0 0 200px 12px rgba(0,255,245,0.25)',
         }}
       />
 
