@@ -32,9 +32,13 @@ export default {
       },
       animation: {
         'flicker': 'flicker 4s linear infinite',
+        'flicker-slow': 'flicker 7s linear infinite',
+        'flicker-fast': 'flicker 2.4s linear infinite',
         'scan': 'scan 6s linear infinite',
         'float': 'float 6s ease-in-out infinite',
         'pulse-neon': 'pulseNeon 2s ease-in-out infinite',
+        'grid-flow': 'gridFlow 3s linear infinite',
+        'neon-breath': 'neonBreath 5s ease-in-out infinite',
       },
       keyframes: {
         flicker: {
@@ -52,6 +56,14 @@ export default {
         pulseNeon: {
           '0%, 100%': { textShadow: '0 0 4px #ff2e88, 0 0 12px #ff2e8866' },
           '50%': { textShadow: '0 0 6px #ff2e88, 0 0 24px #ff2e88aa' },
+        },
+        gridFlow: {
+          '0%': { backgroundPosition: '0 0' },
+          '100%': { backgroundPosition: '0 40px' },
+        },
+        neonBreath: {
+          '0%, 100%': { opacity: '0.35' },
+          '50%': { opacity: '0.75' },
         },
       },
     },

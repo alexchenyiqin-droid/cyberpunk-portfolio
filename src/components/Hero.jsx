@@ -14,7 +14,7 @@ export default function Hero() {
       {/* 透视网格地板 —— 赛博朋克标志元素 */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[60vh] overflow-hidden">
         <div
-          className="absolute inset-0"
+          className="animate-grid-flow absolute inset-0"
           style={{
             backgroundImage:
               'linear-gradient(rgba(255, 42, 109, 0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(5, 217, 232, 0.25) 1px, transparent 1px)',
@@ -27,9 +27,11 @@ export default function Hero() {
         />
       </div>
 
-      {/* 霓虹辉光雾 */}
+      {/* 霓虹辉光雾 —— 四色错落闪烁，远处城市招牌感 */}
       <div className="animate-flicker pointer-events-none absolute -left-32 top-1/4 h-72 w-72 rounded-full bg-neon-pink/20 blur-[120px]" />
-      <div className="animate-flicker pointer-events-none absolute -right-32 bottom-1/4 h-72 w-72 rounded-full bg-neon-cyan/20 blur-[120px]" />
+      <div className="animate-flicker-fast pointer-events-none absolute -right-32 bottom-1/4 h-72 w-72 rounded-full bg-neon-cyan/20 blur-[120px]" />
+      <div className="animate-flicker-slow pointer-events-none absolute left-1/3 top-0 h-64 w-64 rounded-full bg-neon-purple/15 blur-[120px]" />
+      <div className="animate-flicker pointer-events-none absolute right-1/4 top-1/3 h-56 w-56 rounded-full bg-neon-yellow/10 blur-[120px]" />
 
       <div className="container-base relative z-10">
         {/* 终端状态行 */}

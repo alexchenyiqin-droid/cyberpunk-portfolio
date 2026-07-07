@@ -35,8 +35,16 @@ export default function App() {
       <div className="scanlines pointer-events-none fixed inset-0 z-[100] opacity-40" />
       {/* 全局微弱暗角，增强 CRT 显示器质感 */}
       <div
-        className="pointer-events-none fixed inset-0 z-[99]"
+        className="pointer-events-none fixed inset-0 z-[98]"
         style={{ boxShadow: 'inset 0 0 200px 40px rgba(0,0,0,0.6)' }}
+      />
+      {/* 视口边缘霓虹光晕 —— 粉青双色缓慢呼吸，模拟霓虹灯管边框 */}
+      <div
+        className="animate-neon-breath pointer-events-none fixed inset-0 z-[99]"
+        style={{
+          boxShadow:
+            'inset 0 0 140px 6px rgba(255,46,136,0.22), inset 0 0 140px 6px rgba(0,255,245,0.12)',
+        }}
       />
 
       <Routes>
