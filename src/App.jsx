@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { profile } from './data/profile'
 import Navbar from './components/Navbar'
@@ -7,7 +8,18 @@ import Projects from './components/Projects'
 import Blog from './components/Blog'
 import Collection from './components/Collection'
 import Contact from './components/Contact'
-import BlogPost from './pages/BlogPost'
+const BlogPost = lazy(() => import('./pages/BlogPost'))
+
+/**
+ * 路由懒加载占位：进入博客详情页时短暂显示，避免白屏
+ */
+function RouteFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <span className="animate-pulse-neon font-mono text-sm text-neon-cyan">// 加载中...</span>
+    </div>
+  )
+}
 
 /**
  * 首页：单页滚动，由各区块组成
@@ -50,7 +62,14 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         {/* 博客文章详情页 —— 独立布局，不显示首页导航锚点 */}
-        <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route
+          path="/blog/:slug"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <BlogPost />
+            </Suspense>
+          }
+        />
       </Routes>
     </div>
   )
