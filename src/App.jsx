@@ -3,11 +3,12 @@ import { Routes, Route } from 'react-router-dom'
 import { profile } from './data/profile'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import About from './components/About'
-import Projects from './components/Projects'
-import Blog from './components/Blog'
-import Collection from './components/Collection'
-import Contact from './components/Contact'
+import LazySection from './components/common/LazySection'
+const About = lazy(() => import('./components/About'))
+const Projects = lazy(() => import('./components/Projects'))
+const Blog = lazy(() => import('./components/Blog'))
+const Collection = lazy(() => import('./components/Collection'))
+const Contact = lazy(() => import('./components/Contact'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 
 /**
@@ -30,11 +31,11 @@ function Home() {
       <Navbar name={profile.alias} />
       <main>
         <Hero />
-        <About />
-        <Projects />
-        <Blog />
-        <Collection />
-        <Contact />
+        <LazySection minHeight={420}><About /></LazySection>
+        <LazySection minHeight={520}><Projects /></LazySection>
+        <LazySection minHeight={760}><Blog /></LazySection>
+        <LazySection minHeight={480}><Collection /></LazySection>
+        <LazySection minHeight={420}><Contact /></LazySection>
       </main>
     </>
   )
