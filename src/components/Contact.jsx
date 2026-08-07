@@ -51,19 +51,22 @@ export default function Contact() {
 
       {/* 页脚 —— 赛博终端风格 */}
       <footer className="container-base mt-24 border-t border-void-600 pt-8">
-        <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-          <p className="font-mono text-xs text-slate-500">
+          <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+            <p className="font-mono text-xs text-slate-500">
             <span className="text-neon-pink/60">©</span> {year} {profile.name}
             <span className="mx-2 text-void-600">|</span>
             <span className="text-neon-cyan/40">POWERED BY</span> React + Vite
-          </p>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="font-mono text-xs text-slate-500 transition-colors hover:text-neon-cyan"
-          >
-            {'>'} 回到顶部 ↑
-          </button>
-        </div>
+            </p>
+            <div className="flex items-center gap-4 font-mono text-xs text-slate-500">
+              <a href="/privacy.html" className="transition-colors hover:text-neon-cyan">隐私说明</a>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="transition-colors hover:text-neon-cyan"
+              >
+                {'>'} 回到顶部 ↑
+              </button>
+            </div>
+          </div>
       </footer>
     </section>
   )

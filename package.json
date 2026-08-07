@@ -6,6 +6,7 @@
   "description": "暗色科技风个人博客 / 作品集网站",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

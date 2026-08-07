@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { posts } from '../data/posts'
 import { ArrowIcon } from '../components/common/Icons'
+import Seo from '../components/common/Seo'
 
 export default function BlogPost() {
   const { slug } = useParams()
@@ -16,6 +17,7 @@ export default function BlogPost() {
   if (!post) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
+        <Seo title="文章不存在" description="你访问的博客文章不存在。" noindex />
         <p className="font-display text-6xl font-black text-neon-pink animate-pulse-neon">404</p>
         <h1 className="font-display text-2xl font-bold uppercase tracking-wider text-white">
           信号丢失 — 文档不存在
@@ -29,6 +31,7 @@ export default function BlogPost() {
 
   return (
     <main className="mx-auto max-w-3xl px-6 pb-24 pt-32">
+      <Seo title={post.title} description={post.excerpt} type="article" />
       {/* 返回链接 */}
       <Link
         to="/"
@@ -52,6 +55,9 @@ export default function BlogPost() {
             </span>
           ))}
         </div>
+        <p className="mt-4 text-sm leading-relaxed text-slate-500">
+          本文仅供信息交流与学习参考；涉及新闻、产品或数据的内容请以原始发布方的最新信息为准。
+        </p>
       </header>
 
       {/* 正文 —— Markdown 渲染（赛博朋克配色） */}

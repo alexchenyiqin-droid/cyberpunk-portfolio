@@ -4,6 +4,7 @@ import { profile } from './data/profile'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import LazySection from './components/common/LazySection'
+import Seo from './components/common/Seo'
 const About = lazy(() => import('./components/About'))
 const Projects = lazy(() => import('./components/Projects'))
 const Blog = lazy(() => import('./components/Blog'))
@@ -28,6 +29,7 @@ function RouteFallback() {
 function Home() {
   return (
     <>
+      <Seo />
       <Navbar name={profile.alias} />
       <main>
         <Hero />
@@ -38,6 +40,19 @@ function Home() {
         <LazySection minHeight={420}><Contact /></LazySection>
       </main>
     </>
+  )
+}
+
+function NotFound() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
+      <Seo title="页面不存在" description="你访问的页面不存在。" noindex />
+      <p className="font-display text-6xl font-black text-neon-pink animate-pulse-neon">404</p>
+      <h1 className="font-display text-2xl font-bold uppercase tracking-wider text-white">
+        信号丢失 — 页面不存在
+      </h1>
+      <a href="/" className="btn-secondary">返回首页</a>
+    </main>
   )
 }
 
@@ -71,6 +86,7 @@ export default function App() {
             </Suspense>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   )
