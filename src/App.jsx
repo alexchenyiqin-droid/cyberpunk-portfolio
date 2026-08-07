@@ -45,18 +45,18 @@ export default function App() {
   return (
     <div className="relative min-h-screen">
       {/* 全屏 CRT 扫描线叠加层（固定在最上层，不影响交互） */}
-      <div className="scanlines pointer-events-none fixed inset-0 z-[100] opacity-40" />
+      <div className="scanlines pointer-events-none fixed inset-0 z-[100] opacity-20" />
       {/* 全局微弱暗角，增强 CRT 显示器质感 */}
       <div
         className="pointer-events-none fixed inset-0 z-[98]"
-        style={{ boxShadow: 'inset 0 0 200px 40px rgba(0,0,0,0.6)' }}
+        style={{ boxShadow: 'inset 0 0 140px 0px rgba(0,0,0,0.35)' }}
       />
       {/* 视口边缘霓虹光晕 —— 粉青双色明显呼吸，模拟霓虹灯管边框 */}
       <div
         className="animate-neon-breath pointer-events-none fixed inset-0 z-[99]"
         style={{
           boxShadow:
-            'inset 0 0 200px 12px rgba(255,46,136,0.4), inset 0 0 200px 12px rgba(0,255,245,0.25)',
+            'inset 0 0 260px 16px rgba(255,46,136,0.22), inset 0 0 260px 16px rgba(0,255,245,0.14)',
         }}
       />
 

@@ -10,6 +10,9 @@
 
   html {
     scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
@@ -55,7 +58,7 @@
 
   /* 赛博卡片：暗紫底 + 切角感 + 霓虹边框 */
   .card {
-    @apply relative rounded-lg border border-void-600 bg-void-800/70 backdrop-blur-sm transition-all duration-300;
+    @apply relative rounded-lg border border-void-600 bg-void-800/85 transition-all duration-300;
   }
   .card:hover {
     @apply border-neon-pink/60;
@@ -107,7 +110,7 @@
 .glitch {
   position: relative;
   color: #fff;
-  text-shadow: 0 0 8px #ff2e8866;
+  text-shadow: 0 0 3px #ff2e8844;
 }
 .glitch::before,
 .glitch::after {
