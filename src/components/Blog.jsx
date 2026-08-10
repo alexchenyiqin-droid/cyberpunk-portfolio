@@ -45,6 +45,11 @@ export default function Blog() {
               </button>
             </Reveal>
           ))}
+          {posts.length === 0 && (
+            <p className="py-12 text-center font-mono text-sm text-slate-500">
+              // 暂无文章 —— 日志区暂时静默
+            </p>
+          )}
         </div>
       </div>
     </section>
