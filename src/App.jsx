@@ -31,7 +31,7 @@ function Home() {
     <>
       <Seo />
       <Navbar name={profile.alias} />
-      <main>
+      <main id="main">
         <Hero />
         <LazySection minHeight={420}><About /></LazySection>
         <LazySection minHeight={520}><Projects /></LazySection>
@@ -59,19 +59,27 @@ function NotFound() {
 export default function App() {
   return (
     <div className="relative min-h-screen">
+      {/* 跳到主内容（键盘/读屏用户可跳过导航） */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-sm focus:border focus:border-neon-cyan focus:bg-void-950 focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-neon-cyan"
+      >
+        跳到主内容
+      </a>
+
       {/* 全屏 CRT 扫描线叠加层（固定在最上层，不影响交互） */}
-      <div className="scanlines pointer-events-none fixed inset-0 z-[100] opacity-20" />
+      <div className="scanlines pointer-events-none fixed inset-0 z-[100] opacity-10" />
       {/* 全局微弱暗角，增强 CRT 显示器质感 */}
       <div
         className="pointer-events-none fixed inset-0 z-[98]"
         style={{ boxShadow: 'inset 0 0 140px 0px rgba(0,0,0,0.35)' }}
       />
-      {/* 视口边缘霓虹光晕 —— 粉青双色明显呼吸，模拟霓虹灯管边框 */}
+      {/* 视口边缘霓虹光晕 —— 粉青双色轻微呼吸，模拟霓虹灯管边框（已收敛强度） */}
       <div
         className="animate-neon-breath pointer-events-none fixed inset-0 z-[99]"
         style={{
           boxShadow:
-            'inset 0 0 260px 16px rgba(255,46,136,0.22), inset 0 0 260px 16px rgba(0,255,245,0.14)',
+            'inset 0 0 160px 8px rgba(255,46,136,0.16), inset 0 0 160px 8px rgba(0,255,245,0.10)',
         }}
       />
 

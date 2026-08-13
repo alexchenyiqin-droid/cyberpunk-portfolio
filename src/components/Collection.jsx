@@ -43,7 +43,7 @@ export default function Collection() {
                 <span className="font-display text-xs font-semibold uppercase tracking-widest">
                   {cat.label}
                 </span>
-                <span className={`ml-0.5 font-mono text-[11px] ${active ? 'text-neon-pink/60' : 'text-slate-600'}`}>
+                <span className={`ml-0.5 font-mono text-[11px] ${active ? 'text-neon-pink/60' : 'text-slate-500'}`}>
                   ({count})
                 </span>
               </button>
@@ -52,7 +52,7 @@ export default function Collection() {
         </div>
 
         {/* 当前分类副标题 */}
-        <p className="-mt-6 mb-8 font-mono text-[13px] text-slate-500">
+        <p className="mt-3 mb-8 font-mono text-[13px] text-slate-500">
           {categories[activeTab].subtitle}
         </p>
 
@@ -101,7 +101,7 @@ export default function Collection() {
                             [{item.date}]
                           </span>
                           {item.source && (
-                            <span className="font-mono text-[11px] text-slate-600">
+                            <span className="font-mono text-[11px] text-slate-500">
                               via {item.source}
                             </span>
                           )}

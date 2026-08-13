@@ -41,7 +41,7 @@ export default function Blog() {
                     ))}
                   </div>
                 </div>
-                <ArrowIcon className="hidden h-5 w-5 shrink-0 text-slate-600 transition-all group-hover:translate-x-1 group-hover:text-neon-pink sm:block" />
+                <ArrowIcon className="hidden h-5 w-5 shrink-0 text-slate-500 transition-all group-hover:translate-x-1 group-hover:text-neon-pink sm:block" />
               </button>
             </Reveal>
           ))}

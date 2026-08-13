@@ -10,7 +10,7 @@ export default function Contact() {
     <section id="contact" className="py-24 sm:py-32">
       <div className="container-base">
         <SectionHeading
-          label="04"
+          label="05"
           title="通信频道"
           subtitle="> 建立连接 —— 频道已开启，等待信号..."
         />
@@ -22,7 +22,7 @@ export default function Contact() {
             </p>
 
             {/* 社交链接卡片 */}
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {profile.socials.map((s) => (
                 <a
                   key={s.name}
@@ -52,12 +52,12 @@ export default function Contact() {
       {/* 页脚 —— 赛博终端风格 */}
       <footer className="container-base mt-24 border-t border-void-600 pt-8">
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-            <p className="font-mono text-xs text-slate-500">
+            <p className="font-mono text-xs text-slate-400">
             <span className="text-neon-pink/60">©</span> {year} {profile.name}
             <span className="mx-2 text-void-600">|</span>
             <span className="text-neon-cyan/40">POWERED BY</span> React + Vite
             </p>
-            <div className="flex items-center gap-4 font-mono text-xs text-slate-500">
+            <div className="flex items-center gap-4 font-mono text-xs text-slate-400">
               <a href="/privacy.html" className="transition-colors hover:text-neon-cyan">隐私说明</a>
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

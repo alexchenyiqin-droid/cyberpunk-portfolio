@@ -180,3 +180,47 @@
     rgba(0, 0, 0, 0.15) 4px
   );
 }
+
+/* ===== 键盘焦点可见性（可访问性） ===== */
+:focus-visible {
+  outline: 2px solid #00fff5;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* 卡片/按钮在键盘聚焦时给霓虹描边，与鼠标 hover 区分 */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #00fff5;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(0, 255, 245, 0.25);
+}
+
+/* ===== 章节分隔线（增强滚动章节感） ===== */
+main > section:not(:first-child) {
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ===== Hero 辉光雾：移动端/降级时收敛模糊半径，降低 GPU 压力 ===== */
+.hero-blob {
+  filter: blur(120px);
+}
+@media (max-width: 640px) {
+  .hero-blob {
+    filter: blur(64px);
+  }
+}
+
+/* ===== 尊重系统「减少动态效果」偏好（WCAG 2.3.3） ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-blob {
+    filter: blur(40px);
+  }
+}

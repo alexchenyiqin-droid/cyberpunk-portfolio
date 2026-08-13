@@ -16,8 +16,8 @@ export const projects = [
     title: 'Aurora UI 组件库',
     summary: '一套基于 React 的暗色风格 UI 组件库，内置 30+ 组件与主题定制能力。',
     tech: ['React', 'TypeScript', 'Tailwind', 'Storybook'],
-    demo: 'https://example.com',
-    repo: 'https://github.com',
+    demo: '',
+    repo: '',
     accent: 'cyan',
   },
   {
@@ -25,8 +25,8 @@ export const projects = [
     title: 'DevFlow 任务看板',
     summary: '面向开发者的极简 Kanban 工具，支持快捷键操作与本地数据持久化。',
     tech: ['Vue', 'Pinia', 'Vite', 'IndexedDB'],
-    demo: 'https://example.com',
-    repo: 'https://github.com',
+    demo: '',
+    repo: '',
     accent: 'violet',
   },
   {
@@ -34,8 +34,8 @@ export const projects = [
     title: 'MarkScribe 编辑器',
     summary: '所见即所得的 Markdown 编辑器，支持实时预览、数学公式与代码高亮。',
     tech: ['React', 'CodeMirror', 'KaTeX'],
-    demo: 'https://example.com',
-    repo: 'https://github.com',
+    demo: '',
+    repo: '',
     accent: 'mixed',
   },
   {
@@ -44,7 +44,7 @@ export const projects = [
     summary: '轻量级的网站可用性监控服务，异常时通过邮件与 Webhook 告警。',
     tech: ['Node.js', 'PostgreSQL', 'Docker'],
     demo: '',
-    repo: 'https://github.com',
+    repo: '',
     accent: 'cyan',
   },
 ]

@@ -20,9 +20,10 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Orbitron', 'sans-serif'], // 标题/品牌：科技未来感
+        // 中文用系统字体栈显式承载（零流量，跨平台统一；Orbitron/Rajdhani 仅管拉丁）
+        display: ['Orbitron', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'], // 标题/品牌：科技未来感
         mono: ['"JetBrains Mono"', 'Menlo', 'monospace'], // 代号/标签
-        sans: ['Rajdhani', 'system-ui', 'sans-serif'], // 正文：略带棱角
+        sans: ['Rajdhani', 'PingFang SC', 'Microsoft YaHei', 'system-ui', 'sans-serif'], // 正文：略带棱角
       },
       boxShadow: {
         'neon-pink': '0 0 5px #ff2e88, 0 0 20px #ff2e8888, inset 0 0 8px #ff2e8844',
