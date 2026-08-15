@@ -8,7 +8,7 @@ const LINKS = [
   { id: 'contact', label: '联系', code: '/05' },
 ]
 
-const ACCENTS = ['night', 'ice', 'toxic']
+const ACCENTS = ['night', 'ice', 'toxic', 'ember']
 
 export default function Navbar({ name }) {
   const [scrolled, setScrolled] = useState(false)
