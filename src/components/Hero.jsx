@@ -11,6 +11,23 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
+      {/* Hero 立绘背景层 —— AI 生成赛博朋克守望者，mix-blend 融入纯黑底 */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <img
+          src="/hero-portrait.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute bottom-0 right-0 h-[92vh] w-auto max-w-[58%] object-contain opacity-75 mix-blend-screen
+                     max-md:left-1/2 max-md:right-auto max-md:h-[66vh] max-md:max-w-[130%] max-md:-translate-x-1/2 max-md:opacity-20"
+          style={{
+            maskImage:
+              'linear-gradient(to left, black 62%, transparent 100%), linear-gradient(to top, black 74%, transparent 100%)',
+            WebkitMaskImage:
+              'linear-gradient(to left, black 62%, transparent 100%), linear-gradient(to top, black 74%, transparent 100%)',
+          }}
+        />
+      </div>
+
       {/* 透视网格地板 —— 赛博朋克标志元素 */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[60vh] overflow-hidden">
         <div
