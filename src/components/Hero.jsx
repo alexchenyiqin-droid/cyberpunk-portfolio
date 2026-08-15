@@ -17,13 +17,13 @@ export default function Hero() {
           src="/hero-portrait.png"
           alt=""
           aria-hidden="true"
-          className="absolute bottom-0 right-0 h-[92vh] w-auto max-w-[58%] object-contain opacity-75 mix-blend-screen
-                     max-md:left-1/2 max-md:right-auto max-md:h-[66vh] max-md:max-w-[130%] max-md:-translate-x-1/2 max-md:opacity-20"
+          className="absolute bottom-0 right-0 h-[95vh] w-auto max-w-[64%] object-contain opacity-95 mix-blend-screen brightness-110
+                     max-md:left-1/2 max-md:right-auto max-md:h-[72vh] max-md:max-w-[150%] max-md:-translate-x-1/2 max-md:opacity-45"
           style={{
             maskImage:
-              'linear-gradient(to left, black 62%, transparent 100%), linear-gradient(to top, black 74%, transparent 100%)',
+              'linear-gradient(to left, black 88%, transparent 100%), linear-gradient(to top, black 86%, transparent 100%)',
             WebkitMaskImage:
-              'linear-gradient(to left, black 62%, transparent 100%), linear-gradient(to top, black 74%, transparent 100%)',
+              'linear-gradient(to left, black 88%, transparent 100%), linear-gradient(to top, black 86%, transparent 100%)',
           }}
         />
       </div>
