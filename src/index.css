@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== 霓虹换肤主题变量 =====
+   颜色值在 tailwind.config 中以 rgb(var(--x) / <alpha-value>) 引用，
+   切换 <html data-accent> 即可整站换色，透明度修饰（如 /10）照常工作。 */
+:root {
+  --void-950: 5 0 8;
+  --void-900: 10 1 24;
+  --void-800: 18 6 37;
+  --void-700: 28 10 53;
+  --void-600: 42 16 82;
+  --neon-pink: 255 46 136;
+  --neon-cyan: 0 255 245;
+  --neon-yellow: 249 248 113;
+  --neon-purple: 181 55 242;
+}
+/* 冷蓝青：青为主、紫为辅、粉降为点缀 */
+[data-accent='ice'] {
+  --neon-pink: 120 180 255;
+  --neon-cyan: 80 220 255;
+  --neon-purple: 150 120 255;
+  --neon-yellow: 180 230 255;
+}
+/* 毒物绿：绿黄霓虹 */
+[data-accent='toxic'] {
+  --neon-pink: 57 255 20;
+  --neon-cyan: 180 255 120;
+  --neon-purple: 120 255 60;
+  --neon-yellow: 220 255 80;
+}
+
 /* ===== 全局基础样式 ===== */
 @layer base {
   :root {
@@ -17,10 +46,10 @@
 
   body {
     @apply bg-void-900 font-sans text-slate-300 antialiased;
-    /* 背景：深紫黑 + 双色径向辉光 */
+    /* 背景：深紫黑 + 双色径向辉光（跟随换肤变量） */
     background-image:
-      radial-gradient(ellipse at 20% 0%, rgba(255, 46, 136, 0.12), transparent 50%),
-      radial-gradient(ellipse at 80% 100%, rgba(0, 255, 245, 0.1), transparent 50%);
+      radial-gradient(ellipse at 20% 0%, rgb(var(--neon-pink) / 0.12), transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgb(var(--neon-cyan) / 0.1), transparent 50%);
     background-attachment: fixed;
   }
 
@@ -33,14 +62,14 @@
   }
   ::-webkit-scrollbar-thumb {
     @apply rounded-full;
-    background: linear-gradient(#ff2e88, #b537f2);
+    background: linear-gradient(rgb(var(--neon-pink) / 1), rgb(var(--neon-purple) / 1));
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(#00fff5, #ff2e88);
+    background: linear-gradient(rgb(var(--neon-cyan) / 1), rgb(var(--neon-pink) / 1));
   }
 
   ::selection {
-    background: #ff2e88;
+    background: rgb(var(--neon-pink) / 1);
     color: #050008;
   }
 }
@@ -62,7 +91,7 @@
   }
   .card:hover {
     @apply border-neon-pink/60;
-    box-shadow: 0 0 5px #ff2e88, 0 0 20px #ff2e8844;
+    box-shadow: 0 0 5px rgb(var(--neon-pink) / 1), 0 0 20px rgb(var(--neon-pink) / 0.27);
   }
 
   /* 卡片左上角装饰：切角线条 */
@@ -89,7 +118,7 @@
   }
   .btn-primary:hover {
     @apply -translate-y-0.5 bg-neon-pink/20;
-    box-shadow: 0 0 10px #ff2e88, 0 0 30px #ff2e8866;
+    box-shadow: 0 0 10px rgb(var(--neon-pink) / 1), 0 0 30px rgb(var(--neon-pink) / 0.4);
   }
 
   /* 描边次按钮 */
@@ -98,7 +127,7 @@
   }
   .btn-secondary:hover {
     @apply -translate-y-0.5 border-neon-cyan/60 text-neon-cyan;
-    box-shadow: 0 0 10px #00fff566;
+    box-shadow: 0 0 10px rgb(var(--neon-cyan) / 0.4);
   }
 
   .section-label {
@@ -110,7 +139,7 @@
 .glitch {
   position: relative;
   color: #fff;
-  text-shadow: 0 0 3px #ff2e8844;
+  text-shadow: 0 0 3px rgb(var(--neon-pink) / 0.27);
 }
 .glitch::before,
 .glitch::after {
@@ -122,12 +151,12 @@
   height: 100%;
 }
 .glitch::before {
-  color: #00fff5;
+  color: rgb(var(--neon-cyan) / 1);
   z-index: -1;
   animation: glitchTop 3s infinite linear alternate-reverse;
 }
 .glitch::after {
-  color: #ff2e88;
+  color: rgb(var(--neon-pink) / 1);
   z-index: -2;
   animation: glitchBottom 2.5s infinite linear alternate-reverse;
 }
@@ -158,8 +187,8 @@
 /* ===== 合成波透视网格地板 ===== */
 .synth-grid {
   background-image:
-    linear-gradient(to right, rgba(255, 46, 136, 0.4) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 255, 245, 0.3) 1px, transparent 1px);
+    linear-gradient(to right, rgb(var(--neon-pink) / 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--neon-cyan) / 0.3) 1px, transparent 1px);
   background-size: 40px 40px;
   transform: perspective(500px) rotateX(60deg);
   transform-origin: bottom;
@@ -183,16 +212,16 @@
 
 /* ===== 键盘焦点可见性（可访问性） ===== */
 :focus-visible {
-  outline: 2px solid #00fff5;
+  outline: 2px solid rgb(var(--neon-cyan) / 1);
   outline-offset: 2px;
   border-radius: 2px;
 }
 /* 卡片/按钮在键盘聚焦时给霓虹描边，与鼠标 hover 区分 */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid #00fff5;
+  outline: 2px solid rgb(var(--neon-cyan) / 1);
   outline-offset: 3px;
-  box-shadow: 0 0 0 3px rgba(0, 255, 245, 0.25);
+  box-shadow: 0 0 0 3px rgb(var(--neon-cyan) / 0.25);
 }
 
 /* ===== 章节分隔线（增强滚动章节感） ===== */

@@ -8,16 +8,35 @@ const LINKS = [
   { id: 'contact', label: '联系', code: '/05' },
 ]
 
+const ACCENTS = ['night', 'ice', 'toxic']
+
 export default function Navbar({ name }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [active, setActive] = useState('about')
+  const [accent, setAccent] = useState(() => {
+    if (typeof window === 'undefined') return 'night'
+    return localStorage.getItem('cyber-accent') || 'night'
+  })
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // 霓虹换肤：同步到 <html data-accent> 并持久化
+  useEffect(() => {
+    document.documentElement.setAttribute('data-accent', accent)
+    try {
+      localStorage.setItem('cyber-accent', accent)
+    } catch (_) {}
+  }, [accent])
+
+  const cycleAccent = () => {
+    const i = ACCENTS.indexOf(accent)
+    setAccent(ACCENTS[(i + 1) % ACCENTS.length])
+  }
 
   // 滚动高亮（scrollspy）：标记当前所在区块
   useEffect(() => {
@@ -76,51 +95,78 @@ export default function Navbar({ name }) {
           <span className="cursor-blink ml-1 text-neon-pink">_</span>
         </button>
 
-        {/* 桌面端导航 —— 带代号，当前区块高亮 */}
-        <ul className="hidden items-center gap-7 md:flex">
-          {LINKS.map((l) => {
-            const isActive = active === l.id
-            return (
-              <li key={l.id}>
-                <button
-                  onClick={() => go(l.id)}
-                  aria-current={isActive ? 'true' : undefined}
-                  className={`group font-mono text-sm transition-colors ${
-                    isActive ? 'text-neon-cyan' : 'text-slate-400 hover:text-neon-cyan'
-                  }`}
-                >
-                  <span
-                    className={
-                      isActive
-                        ? 'text-neon-pink'
-                        : 'text-neon-pink/60 group-hover:text-neon-pink'
-                    }
-                  >
-                    {l.code}
-                  </span>{' '}
-                  {l.label}
-                  <span
-                    className={`ml-1 inline-block h-px w-0 bg-neon-cyan align-middle transition-all duration-300 ${
-                      isActive ? 'w-3' : 'group-hover:w-3'
+        {/* 桌面端导航 —— 带代号，当前区块高亮 + 霓虹换肤切换 */}
+        <div className="hidden items-center gap-7 md:flex">
+          <ul className="flex items-center gap-7">
+            {LINKS.map((l) => {
+              const isActive = active === l.id
+              return (
+                <li key={l.id}>
+                  <button
+                    onClick={() => go(l.id)}
+                    aria-current={isActive ? 'true' : undefined}
+                    className={`group font-mono text-sm transition-colors ${
+                      isActive ? 'text-neon-cyan' : 'text-slate-400 hover:text-neon-cyan'
                     }`}
-                  />
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+                  >
+                    <span
+                      className={
+                        isActive
+                          ? 'text-neon-pink'
+                          : 'text-neon-pink/60 group-hover:text-neon-pink'
+                      }
+                    >
+                      {l.code}
+                    </span>{' '}
+                    {l.label}
+                    <span
+                      className={`ml-1 inline-block h-px w-0 bg-neon-cyan align-middle transition-all duration-300 ${
+                        isActive ? 'w-3' : 'group-hover:w-3'
+                      }`}
+                    />
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
 
-        {/* 移动端汉堡按钮 */}
-        <button
-          onClick={() => setMenuOpen((v) => !v)}
-          className="text-neon-cyan md:hidden"
-          aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
-          aria-expanded={menuOpen}
-        >
-          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {menuOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M3 12h18M3 6h18M3 18h18" />}
-          </svg>
-        </button>
+          {/* 霓虹换肤切换 */}
+          <button
+            onClick={cycleAccent}
+            aria-label="切换霓虹配色"
+            className="flex items-center gap-2 rounded-sm border border-void-600 bg-void-800/50 px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-slate-300 transition-colors hover:border-neon-cyan/60 hover:text-neon-cyan"
+          >
+            <span
+              className="h-2.5 w-2.5 rounded-full"
+              style={{ background: 'rgb(var(--neon-pink) / 1)' }}
+            />
+            {accent}
+          </button>
+        </div>
+
+        {/* 移动端：汉堡 + 换肤切换 */}
+        <div className="flex items-center gap-3 md:hidden">
+          <button
+            onClick={cycleAccent}
+            aria-label="切换霓虹配色"
+            className="flex h-9 w-9 items-center justify-center rounded-sm border border-void-600 bg-void-800/50"
+          >
+            <span
+              className="h-3 w-3 rounded-full"
+              style={{ background: 'rgb(var(--neon-pink) / 1)' }}
+            />
+          </button>
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="text-neon-cyan"
+            aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
+            aria-expanded={menuOpen}
+          >
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              {menuOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M3 12h18M3 6h18M3 18h18" />}
+            </svg>
+          </button>
+        </div>
       </nav>
 
       {/* 移动端下拉菜单 */}
@@ -142,6 +188,18 @@ export default function Navbar({ name }) {
               </li>
             )
           })}
+          <li className="py-2">
+            <button
+              onClick={cycleAccent}
+              className="flex items-center gap-2 font-mono text-sm text-slate-300 hover:text-neon-cyan"
+            >
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{ background: 'rgb(var(--neon-pink) / 1)' }}
+              />
+              切换霓虹：{accent} →
+            </button>
+          </li>
         </ul>
       )}
     </header>

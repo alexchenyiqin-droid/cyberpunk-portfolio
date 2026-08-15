@@ -5,18 +5,19 @@ export default {
     extend: {
       colors: {
         // 赛博朋克调色板：深紫黑底 + 霓虹三色撞色
+        // 改为引用 CSS 变量，支持「霓虹换肤」主题切换（透明度修饰仍可用）
         void: {
-          950: '#050008', // 最深背景：近黑紫
-          900: '#0a0118', // 主背景
-          800: '#120625', // 卡片背景
-          700: '#1c0a35', // 悬停/边框
-          600: '#2a1052', // 强边框
+          950: 'rgb(var(--void-950) / <alpha-value>)',
+          900: 'rgb(var(--void-900) / <alpha-value>)',
+          800: 'rgb(var(--void-800) / <alpha-value>)',
+          700: 'rgb(var(--void-700) / <alpha-value>)',
+          600: 'rgb(var(--void-600) / <alpha-value>)',
         },
         neon: {
-          pink: '#ff2e88', // 霓虹粉/品红（主强调）
-          cyan: '#00fff5', // 电光青（次强调）
-          yellow: '#f9f871', // 霓虹黄（点缀）
-          purple: '#b537f2', // 霓虹紫
+          pink: 'rgb(var(--neon-pink) / <alpha-value>)',
+          cyan: 'rgb(var(--neon-cyan) / <alpha-value>)',
+          yellow: 'rgb(var(--neon-yellow) / <alpha-value>)',
+          purple: 'rgb(var(--neon-purple) / <alpha-value>)',
         },
       },
       fontFamily: {
@@ -26,10 +27,10 @@ export default {
         sans: ['Rajdhani', 'PingFang SC', 'Microsoft YaHei', 'system-ui', 'sans-serif'], // 正文：略带棱角
       },
       boxShadow: {
-        'neon-pink': '0 0 5px #ff2e88, 0 0 20px #ff2e8888, inset 0 0 8px #ff2e8844',
-        'neon-cyan': '0 0 5px #00fff5, 0 0 20px #00fff588, inset 0 0 8px #00fff544',
-        'glow-pink': '0 0 30px #ff2e8866',
-        'glow-cyan': '0 0 30px #00fff566',
+        'neon-pink': '0 0 5px rgb(var(--neon-pink) / 1), 0 0 20px rgb(var(--neon-pink) / 0.53), inset 0 0 8px rgb(var(--neon-pink) / 0.27)',
+        'neon-cyan': '0 0 5px rgb(var(--neon-cyan) / 1), 0 0 20px rgb(var(--neon-cyan) / 0.53), inset 0 0 8px rgb(var(--neon-cyan) / 0.27)',
+        'glow-pink': '0 0 30px rgb(var(--neon-pink) / 0.4)',
+        'glow-cyan': '0 0 30px rgb(var(--neon-cyan) / 0.4)',
       },
       animation: {
         'flicker': 'flicker 4s linear infinite',
@@ -55,8 +56,8 @@ export default {
           '50%': { transform: 'translateY(-12px)' },
         },
         pulseNeon: {
-          '0%, 100%': { textShadow: '0 0 4px #ff2e88, 0 0 12px #ff2e8866' },
-          '50%': { textShadow: '0 0 6px #ff2e88, 0 0 24px #ff2e88aa' },
+          '0%, 100%': { textShadow: '0 0 4px rgb(var(--neon-pink) / 1), 0 0 12px rgb(var(--neon-pink) / 0.4)' },
+          '50%': { textShadow: '0 0 6px rgb(var(--neon-pink) / 1), 0 0 24px rgb(var(--neon-pink) / 0.67)' },
         },
         gridFlow: {
           '0%': { backgroundPosition: '0 0' },

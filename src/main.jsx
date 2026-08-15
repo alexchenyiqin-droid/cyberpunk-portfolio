@@ -24,6 +24,12 @@ function RouteTracker() {
   return null
 }
 
+// 应用上次选择的霓虹配色（在渲染前设置，避免换肤闪烁）
+try {
+  const savedAccent = localStorage.getItem('cyber-accent')
+  if (savedAccent) document.documentElement.setAttribute('data-accent', savedAccent)
+} catch (_) {}
+
 initAnalytics()
 
 createRoot(document.getElementById('root')).render(

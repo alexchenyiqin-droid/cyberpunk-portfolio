@@ -80,7 +80,7 @@ export default function App() {
         className="animate-neon-breath pointer-events-none fixed inset-0 z-[99]"
         style={{
           boxShadow:
-            'inset 0 0 160px 8px rgba(255,46,136,0.16), inset 0 0 160px 8px rgba(0,255,245,0.10)',
+            'inset 0 0 160px 8px rgb(var(--neon-pink) / 0.16), inset 0 0 160px 8px rgb(var(--neon-cyan) / 0.10)',
         }}
       />
 
