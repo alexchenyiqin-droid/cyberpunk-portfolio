@@ -45,6 +45,23 @@ export function ExternalIcon({ className = base }) {
   )
 }
 
+export function SearchIcon({ className = base }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="7" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+  )
+}
+
+export function CloseIcon({ className = base }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  )
+}
+
 /** 按 icon 字段名取出对应组件 */
 export function SocialIcon({ name, className }) {
   const map = { mail: MailIcon, github: GithubIcon, twitter: TwitterIcon }

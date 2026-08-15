@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import LazySection from './components/common/LazySection'
 import Seo from './components/common/Seo'
+import TerminalEgg from './components/TerminalEgg'
 const About = lazy(() => import('./components/About'))
 const Projects = lazy(() => import('./components/Projects'))
 const Blog = lazy(() => import('./components/Blog'))
@@ -96,6 +97,9 @@ export default function App() {
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
+
+      {/* 全局终端彩蛋入口（右下角常驻 >_） */}
+      <TerminalEgg />
     </div>
   )
 }

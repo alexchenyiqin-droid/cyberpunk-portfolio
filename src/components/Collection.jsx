@@ -1,18 +1,29 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { collections, categories } from '../data/collection'
 import SectionHeading from './common/SectionHeading'
 import Reveal from './common/Reveal'
-import { ExternalIcon } from './common/Icons'
+import { ExternalIcon, SearchIcon } from './common/Icons'
 
 const tabOrder = ['tool', 'miniapp', 'video', 'music', 'image']
 
 export default function Collection() {
   const [activeTab, setActiveTab] = useState('tool')
-  const filtered = useMemo(
-    () => collections.filter((item) => item.type === activeTab),
-    [activeTab],
-  )
+  const [query, setQuery] = useState('')
+  const inputRef = useRef(null)
+
+  const searching = query.trim().length > 0
+
+  const displayed = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    // 搜索时跨分类匹配；否则按当前分类过滤
+    if (!q) return collections.filter((i) => i.type === activeTab)
+    return collections.filter((i) =>
+      (i.title + ' ' + i.desc + ' ' + (i.source || '') + ' ' + i.type)
+        .toLowerCase()
+        .includes(q),
+    )
+  }, [query, activeTab])
 
   return (
     <section id="collection" className="py-24 sm:py-32">
@@ -23,16 +34,47 @@ export default function Collection() {
           subtitle="> 大王随手标记的好东西 —— 工具 / 程序 / 影音 / 图像，分类陈列"
         />
 
+        {/* 实时搜索框 */}
+        <div className="mb-6 flex items-center gap-3 rounded-lg border border-void-600 bg-void-800/60 px-4 py-3 transition-all focus-within:border-neon-cyan/60 focus-within:shadow-neon-cyan">
+          <SearchIcon className="h-5 w-5 shrink-0 text-neon-cyan/70" />
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setQuery('')
+                inputRef.current?.blur()
+              }
+            }}
+            placeholder="检索信号 // 标题 · 描述 · 来源"
+            aria-label="搜索收藏"
+            className="w-full bg-transparent font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none"
+          />
+          {searching && (
+            <button
+              onClick={() => setQuery('')}
+              aria-label="清除搜索"
+              className="shrink-0 font-mono text-xs text-slate-500 transition-colors hover:text-neon-pink"
+            >
+              [ 清除 ]
+            </button>
+          )}
+        </div>
+
         {/* 分类切换标签 */}
-        <div className="mb-10 flex flex-wrap gap-3">
+        <div className="mb-4 flex flex-wrap gap-3">
           {tabOrder.map((key) => {
             const cat = categories[key]
             const count = collections.filter((i) => i.type === key).length
-            const active = activeTab === key
+            const active = !searching && activeTab === key
             return (
               <button
                 key={key}
-                onClick={() => setActiveTab(key)}
+                onClick={() => {
+                  setActiveTab(key)
+                  setQuery('')
+                }}
                 className={`group flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm transition-all duration-200
                   ${active
                     ? 'bg-neon-pink/15 text-neon-pink shadow-[0_0_12px_rgba(236,72,153,0.2)]'
@@ -51,30 +93,34 @@ export default function Collection() {
           })}
         </div>
 
-        {/* 当前分类副标题 */}
-        <p className="mt-3 mb-8 font-mono text-[13px] text-slate-500">
-          {categories[activeTab].subtitle}
+        {/* 状态说明 */}
+        <p className="mb-8 font-mono text-[13px] text-slate-500">
+          {searching
+            ? `// 检索「${query.trim()}」 —— 命中 ${displayed.length} 条信号`
+            : categories[activeTab].subtitle}
         </p>
 
         {/* 内容网格 */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeTab}
+            key={searching ? 'search:' + query : activeTab}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {filtered.length === 0 ? (
+            {displayed.length === 0 ? (
               <div className="col-span-full flex flex-col items-center py-20">
-                <span className="text-5xl opacity-30">{categories[activeTab].icon}</span>
+                <span className="text-5xl opacity-30">📡</span>
                 <p className="mt-4 font-mono text-sm text-slate-600">
-                  [ 该分类暂无内容，等待大王投喂 ]
+                  {searching
+                    ? '[ 未捕获到匹配信号，换个关键词试试 ]'
+                    : '[ 该分类暂无内容，等待大王投喂 ]'}
                 </p>
               </div>
             ) : (
-              filtered.map((item, i) => (
+              displayed.map((item, i) => (
                 <Reveal key={item.id} delay={i * 0.06}>
                   <motion.article
                     whileHover={{ y: -4 }}
@@ -88,6 +134,11 @@ export default function Collection() {
 
                     {/* 内容 */}
                     <div className="flex flex-1 flex-col p-5">
+                      {searching && (
+                        <span className="mb-2 inline-flex w-fit items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-neon-purple/70">
+                          {categories[item.type].icon} {categories[item.type].label}
+                        </span>
+                      )}
                       <h3 className="font-display text-sm font-bold uppercase tracking-wider text-white transition-colors group-hover:text-neon-cyan">
                         {item.title}
                       </h3>
