@@ -11,19 +11,22 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Hero 立绘背景层 —— AI 生成赛博朋克守望者，mix-blend 融入纯黑底 */}
-      <div className="pointer-events-none absolute inset-0 z-0">
+      {/* Hero 立绘背景层 —— AI 赛博朋克守望者，融入纯黑底 */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        {/* 立绘脚下霓虹衬托光晕：消除悬浮感，让人物「落地」，暗部透出主题色 */}
+        <div className="animate-flicker pointer-events-none absolute bottom-[5%] right-[8%] h-[34vh] w-[34vh] rounded-full bg-neon-pink/25 hero-blob" />
+        <div className="animate-flicker-slow pointer-events-none absolute bottom-0 right-[24%] h-[24vh] w-[24vh] rounded-full bg-neon-cyan/18 hero-blob" />
         <img
           src="/hero-portrait.png"
           alt=""
           aria-hidden="true"
-          className="absolute bottom-0 right-0 h-[95vh] w-auto max-w-[64%] object-contain opacity-95 mix-blend-screen brightness-110
-                     max-md:left-1/2 max-md:right-auto max-md:h-[72vh] max-md:max-w-[150%] max-md:-translate-x-1/2 max-md:opacity-45"
+          className="absolute bottom-0 right-0 h-[96vh] w-auto max-w-[60%] object-contain opacity-90 mix-blend-screen
+                     max-md:left-1/2 max-md:right-auto max-md:h-[60vh] max-md:max-w-[150%] max-md:-translate-x-1/2 max-md:opacity-40"
           style={{
             maskImage:
-              'linear-gradient(to left, black 88%, transparent 100%), linear-gradient(to top, black 86%, transparent 100%)',
+              'linear-gradient(to left, black 80%, transparent 100%), linear-gradient(to bottom, black 76%, transparent 100%)',
             WebkitMaskImage:
-              'linear-gradient(to left, black 88%, transparent 100%), linear-gradient(to top, black 86%, transparent 100%)',
+              'linear-gradient(to left, black 80%, transparent 100%), linear-gradient(to bottom, black 76%, transparent 100%)',
           }}
         />
       </div>
