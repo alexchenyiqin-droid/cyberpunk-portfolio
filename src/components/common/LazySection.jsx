@@ -40,7 +40,7 @@ export default function LazySection({ children, minHeight = 480, rootMargin = '4
   }, [active, rootMargin])
 
   return (
-    <div ref={ref} style={active ? undefined : { minHeight }}>
+    <div ref={ref} style={{ minHeight }}>
       {active ? (
         <Suspense fallback={<SectionFallback minHeight={minHeight} />}>
           {children}
