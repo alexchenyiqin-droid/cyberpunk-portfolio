@@ -36,7 +36,7 @@ function Home() {
         <Hero />
         <LazySection minHeight={420}><About /></LazySection>
         <LazySection minHeight={520}><Projects /></LazySection>
-        <LazySection minHeight={760}><Blog /></LazySection>
+        <LazySection minHeight={420}><Blog /></LazySection>
         <LazySection minHeight={480}><Collection /></LazySection>
         <LazySection minHeight={420}><Contact /></LazySection>
       </main>
