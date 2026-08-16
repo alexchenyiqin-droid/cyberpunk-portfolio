@@ -11,24 +11,46 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Hero 立绘背景层 —— AI 赛博朋克守望者，融入纯黑底 */}
+      {/* Hero 几何全息层 —— 纯 SVG 绘制，无图片，跟随霓虹配色 */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {/* 立绘脚下霓虹衬托光晕：消除悬浮感，让人物「落地」，暗部透出主题色 */}
-        <div className="animate-flicker pointer-events-none absolute bottom-[5%] right-[8%] h-[34vh] w-[34vh] rounded-full bg-neon-pink/25 hero-blob" />
-        <div className="animate-flicker-slow pointer-events-none absolute bottom-0 right-[24%] h-[24vh] w-[24vh] rounded-full bg-neon-cyan/18 hero-blob" />
-        <img
-          src="/hero-portrait.png"
-          alt=""
-          aria-hidden="true"
-          className="absolute bottom-0 right-0 h-[96vh] w-auto max-w-[60%] object-contain opacity-90 mix-blend-screen
-                     max-md:left-1/2 max-md:right-auto max-md:h-[60vh] max-md:max-w-[150%] max-md:-translate-x-1/2 max-md:opacity-40"
-          style={{
-            maskImage:
-              'linear-gradient(to left, black 80%, transparent 100%), linear-gradient(to bottom, black 76%, transparent 100%)',
-            WebkitMaskImage:
-              'linear-gradient(to left, black 80%, transparent 100%), linear-gradient(to bottom, black 76%, transparent 100%)',
-          }}
-        />
+        {/* 右侧全息环 HUD */}
+        <div className="absolute right-[6%] top-1/2 hidden aspect-square h-[78vh] max-h-[820px] -translate-y-1/2 max-md:hidden">
+          {/* 外环：刻度 */}
+          <svg viewBox="0 0 400 400" className="h-full w-full animate-[spin_70s_linear_infinite]" style={{ color: 'rgb(var(--neon-cyan))' }}>
+            <circle cx="200" cy="200" r="192" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeWidth="1" strokeDasharray="2 9" />
+            <circle cx="200" cy="200" r="176" fill="none" stroke="currentColor" strokeOpacity="0.45" strokeWidth="1.5" strokeDasharray="46 14" />
+          </svg>
+          {/* 中环：反向旋转，粉 */}
+          <svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full animate-[spin_44s_linear_infinite_reverse]" style={{ color: 'rgb(var(--neon-pink))' }}>
+            <circle cx="200" cy="200" r="150" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="2" strokeDasharray="3 10" />
+            <path d="M200 36 L200 64 M200 336 L200 364 M36 200 L64 200 M336 200 L364 200" stroke="currentColor" strokeOpacity="0.7" strokeWidth="2" />
+          </svg>
+          {/* 内环：快速旋转，青 + 节点 */}
+          <svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full animate-[spin_22s_linear_infinite]" style={{ color: 'rgb(var(--neon-cyan))' }}>
+            <circle cx="200" cy="200" r="118" fill="none" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.5" />
+            <circle cx="200" cy="200" r="118" fill="none" stroke="rgb(var(--neon-pink))" strokeOpacity="0.55" strokeWidth="3" strokeDasharray="5 16" />
+            <circle cx="200" cy="82" r="4" fill="currentColor" />
+            <circle cx="289" cy="245" r="4" fill="currentColor" />
+            <circle cx="111" cy="245" r="4" fill="currentColor" />
+          </svg>
+          {/* 中心脉冲节点 + 状态字 */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center font-mono">
+            <div className="mx-auto h-3 w-3 rounded-full bg-neon-cyan shadow-neon-cyan animate-pulse-neon" />
+            <div className="mt-2 text-[10px] tracking-[0.3em] text-neon-cyan/70">SYS//ONLINE</div>
+            <div className="text-[10px] tracking-[0.3em] text-neon-pink/60">v2.077</div>
+          </div>
+        </div>
+
+        {/* 左侧浮动几何碎片 —— 填充页左留白，呼应 HUD */}
+        <svg viewBox="0 0 100 100" className="absolute left-[7%] top-[16%] h-24 w-24 animate-float" style={{ color: 'rgb(var(--neon-purple))' }}>
+          <rect x="30" y="30" width="40" height="40" fill="none" stroke="currentColor" strokeOpacity="0.55" strokeWidth="2" transform="rotate(45 50 50)" />
+          <circle cx="50" cy="50" r="6" fill="currentColor" fillOpacity="0.7" />
+        </svg>
+        <svg viewBox="0 0 100 100" className="absolute bottom-[18%] left-[12%] h-14 w-14 animate-float [animation-delay:1.4s]" style={{ color: 'rgb(var(--neon-cyan))' }}>
+          <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="4 6" />
+          <line x1="50" y1="16" x2="50" y2="84" stroke="currentColor" strokeOpacity="0.5" strokeWidth="1.5" />
+          <line x1="16" y1="50" x2="84" y2="50" stroke="currentColor" strokeOpacity="0.5" strokeWidth="1.5" />
+        </svg>
       </div>
 
       {/* 透视网格地板 —— 赛博朋克标志元素 */}
