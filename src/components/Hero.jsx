@@ -14,7 +14,7 @@ export default function Hero() {
       {/* Hero 几何全息层 —— 纯 SVG 绘制，无图片，跟随霓虹配色 */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* 右侧全息环 HUD */}
-        <div className="absolute right-[6%] top-1/2 hidden aspect-square h-[78vh] max-h-[820px] -translate-y-1/2 max-md:hidden">
+        <div className="absolute right-[6%] top-1/2 hidden aspect-square h-[58vh] max-h-[640px] -translate-y-1/2 lg:block xl:h-[78vh] xl:max-h-[820px]">
           {/* 外环：刻度 */}
           <svg viewBox="0 0 400 400" className="h-full w-full animate-[spin_70s_linear_infinite]" style={{ color: 'rgb(var(--neon-cyan))' }}>
             <circle cx="200" cy="200" r="192" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeWidth="1" strokeDasharray="2 9" />
@@ -59,7 +59,7 @@ export default function Hero() {
           className="animate-grid-flow absolute inset-0"
           style={{
             backgroundImage:
-              'linear-gradient(rgba(255, 42, 109, 0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(5, 217, 232, 0.25) 1px, transparent 1px)',
+              'linear-gradient(rgb(var(--neon-pink) / 0.35) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--neon-cyan) / 0.25) 1px, transparent 1px)',
             backgroundSize: '40px 40px',
             transform: 'perspective(400px) rotateX(60deg)',
             transformOrigin: 'bottom',
