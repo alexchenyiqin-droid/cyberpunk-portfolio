@@ -38,20 +38,33 @@ export default function Navbar({ name }) {
     setAccent(ACCENTS[(i + 1) % ACCENTS.length])
   }
 
-  // 滚动高亮（scrollspy）：标记当前所在区块
+  // 滚动高亮：区块由懒加载挂载，需在 DOM 新增后重新订阅。
   useEffect(() => {
-    const sections = LINKS.map((l) => document.getElementById(l.id)).filter(Boolean)
-    if (sections.length === 0) return
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id)
-        })
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
-    )
-    sections.forEach((s) => obs.observe(s))
-    return () => obs.disconnect()
+    let observer
+    const observeSections = () => {
+      observer?.disconnect()
+      const sections = LINKS.map((l) => document.getElementById(l.id)).filter(Boolean)
+      if (!sections.length) return
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) setActive(entry.target.id)
+          })
+        },
+        { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+      )
+      sections.forEach((section) => observer.observe(section))
+    }
+
+    observeSections()
+    const main = document.getElementById('main')
+    const mutations = main ? new MutationObserver(observeSections) : null
+    mutations?.observe(main, { childList: true, subtree: true })
+
+    return () => {
+      observer?.disconnect()
+      mutations?.disconnect()
+    }
   }, [])
 
   // 移动端菜单：Esc 关闭 + 打开时锁定页面滚动
