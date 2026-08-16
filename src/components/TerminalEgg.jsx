@@ -92,6 +92,7 @@ export default function TerminalEgg() {
   const [histIdx, setHistIdx] = useState(-1)
   const bodyRef = useRef(null)
   const inputRef = useRef(null)
+  const dialogRef = useRef(null)
 
   const scrollToSection = (id) => {
     setOpen(false)
@@ -108,6 +109,41 @@ export default function TerminalEgg() {
       bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight })
     }
   }, [open, lines])
+
+  // 弹层打开后锁定背景滚动，并将键盘焦点限制在终端内。
+  useEffect(() => {
+    if (!open) return
+    const previousFocus = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    const focusableSelector = 'button, input, [href], [tabindex]:not([tabindex="-1"])'
+    const onDocumentKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        return
+      }
+      if (event.key !== 'Tab') return
+      const focusable = [...(dialogRef.current?.querySelectorAll(focusableSelector) || [])]
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', onDocumentKeyDown)
+    requestAnimationFrame(() => inputRef.current?.focus())
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onDocumentKeyDown)
+      previousFocus?.focus?.()
+    }
+  }, [open])
 
   const submit = () => {
     const raw = input
@@ -182,6 +218,8 @@ export default function TerminalEgg() {
       <button
         onClick={() => setOpen(true)}
         aria-label="打开终端"
+        aria-haspopup="dialog"
+        aria-expanded={open}
         className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-lg border border-neon-cyan/40 bg-void-950/80 font-mono text-lg text-neon-cyan shadow-neon-cyan transition-all hover:bg-void-800 hover:shadow-glow-cyan"
       >
         {'>_'}
@@ -198,6 +236,10 @@ export default function TerminalEgg() {
           >
             <div className="absolute inset-0 bg-void-950/85 backdrop-blur-sm" />
             <motion.div
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="terminal-title"
               onClick={(e) => e.stopPropagation()}
               initial={{ scale: 0.94, y: 20, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -207,7 +249,7 @@ export default function TerminalEgg() {
             >
               {/* 标题栏 */}
               <div className="flex items-center justify-between border-b border-neon-cyan/30 px-4 py-2.5">
-                <span className="font-mono text-xs uppercase tracking-widest text-neon-cyan">
+                <span id="terminal-title" className="font-mono text-xs uppercase tracking-widest text-neon-cyan">
                   // NEON_TERMINAL
                 </span>
                 <button
