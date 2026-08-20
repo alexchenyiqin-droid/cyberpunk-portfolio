@@ -94,6 +94,11 @@ function ProjectCard({ project, index, onOpen }) {
                   <GithubIcon className="h-4 w-4" /> 源码
                 </a>
               )}
+              {!project.demo && !project.repo && (
+                <span className="font-mono text-[11px] text-slate-500">
+                  概念项目 · 链接整理中
+                </span>
+              )}
             </div>
             <span className="font-mono text-[11px] text-neon-cyan/60 transition-colors group-hover:text-neon-cyan">
               查看详情 ↗
