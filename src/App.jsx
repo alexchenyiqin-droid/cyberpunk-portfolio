@@ -8,7 +8,6 @@ import Seo from './components/common/Seo'
 import TerminalEgg from './components/TerminalEgg'
 const About = lazy(() => import('./components/About'))
 const Projects = lazy(() => import('./components/Projects'))
-const Blog = lazy(() => import('./components/Blog'))
 const Collection = lazy(() => import('./components/Collection'))
 const Contact = lazy(() => import('./components/Contact'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
@@ -36,7 +35,6 @@ function Home() {
         <Hero />
         <LazySection minHeight={420}><About /></LazySection>
         <LazySection minHeight={520}><Projects /></LazySection>
-        <LazySection minHeight={420}><Blog /></LazySection>
         <LazySection minHeight={480}><Collection /></LazySection>
         <LazySection minHeight={420}><Contact /></LazySection>
       </main>
