@@ -11,6 +11,7 @@ const Projects = lazy(() => import('./components/Projects'))
 const Collection = lazy(() => import('./components/Collection'))
 const Contact = lazy(() => import('./components/Contact'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
+const Admin = lazy(() => import('./pages/Admin'))
 
 /**
  * 路由懒加载占位：进入博客详情页时短暂显示，避免白屏
@@ -90,6 +91,14 @@ export default function App() {
           element={
             <Suspense fallback={<RouteFallback />}>
               <BlogPost />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <Admin />
             </Suspense>
           }
         />
