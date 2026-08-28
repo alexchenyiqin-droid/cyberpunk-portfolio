@@ -1,5 +1,8 @@
-import { mkdir, writeFile } from 'node:fs/promises'
-import { posts } from '../src/data/posts.js'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+
+const posts = JSON.parse(
+  await readFile(new URL('../src/content/posts.json', import.meta.url), 'utf8'),
+)
 
 const siteUrl = 'https://www.alex9527.xyz'
 
