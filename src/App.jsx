@@ -5,7 +5,6 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import LazySection from './components/common/LazySection'
 import Seo from './components/common/Seo'
-import TerminalEgg from './components/TerminalEgg'
 const About = lazy(() => import('./components/About'))
 const Projects = lazy(() => import('./components/Projects'))
 const Collection = lazy(() => import('./components/Collection'))
@@ -49,7 +48,7 @@ function NotFound() {
       <Seo title="页面不存在" description="你访问的页面不存在。" noindex />
       <p className="font-display text-6xl font-black text-neon-pink animate-pulse-neon">404</p>
       <h1 className="font-display text-2xl font-bold uppercase tracking-wider text-white">
-        信号丢失 — 页面不存在
+        页面不存在
       </h1>
       <a href="/" className="btn-secondary">返回首页</a>
     </main>
@@ -66,22 +65,6 @@ export default function App() {
       >
         跳到主内容
       </a>
-
-      {/* 全屏 CRT 扫描线叠加层（固定在最上层，不影响交互） */}
-      <div className="scanlines pointer-events-none fixed inset-0 z-[100] opacity-10" />
-      {/* 全局微弱暗角，增强 CRT 显示器质感 */}
-      <div
-        className="pointer-events-none fixed inset-0 z-[98]"
-        style={{ boxShadow: 'inset 0 0 140px 0px rgba(0,0,0,0.35)' }}
-      />
-      {/* 视口边缘霓虹光晕 —— 粉青双色轻微呼吸，模拟霓虹灯管边框（已收敛强度） */}
-      <div
-        className="animate-neon-breath pointer-events-none fixed inset-0 z-[99]"
-        style={{
-          boxShadow:
-            'inset 0 0 160px 8px rgb(var(--neon-pink) / 0.16), inset 0 0 160px 8px rgb(var(--neon-cyan) / 0.10)',
-        }}
-      />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -104,9 +87,6 @@ export default function App() {
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
-
-      {/* 全局终端彩蛋入口（右下角常驻 >_） */}
-      <TerminalEgg />
     </div>
   )
 }

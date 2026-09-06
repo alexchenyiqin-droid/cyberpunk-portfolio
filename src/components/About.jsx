@@ -8,25 +8,14 @@ export default function About() {
       <div className="container-base">
         <SectionHeading
           label="01"
-          title="身份档案"
-          subtitle="> 加载用户数据流 ..."
+          title="关于我"
+          subtitle="从产品视角理解问题，用工程方式把它做出来。"
         />
 
         <div className="grid gap-12 md:grid-cols-[auto_1fr] md:items-start">
-          {/* 左侧：头像方块 —— 终端 ID 卡风格 */}
           <Reveal className="flex flex-col items-center gap-4">
-            <div className="relative">
-              {/* 霓虹辉光 */}
-              <div className="absolute inset-0 rounded-sm bg-gradient-to-br from-neon-pink to-neon-cyan opacity-40 blur-lg" />
-              {/* 头像方块 + 四角装饰 */}
-              <div className="card relative flex h-40 w-40 items-center justify-center font-display text-6xl font-black">
-                <span className="text-gradient">{profile.alias.charAt(0)}</span>
-                {/* 四角科幻装饰线 */}
-                <span className="absolute left-1 top-1 h-3 w-3 border-l-2 border-t-2 border-neon-cyan" />
-                <span className="absolute right-1 top-1 h-3 w-3 border-r-2 border-t-2 border-neon-cyan" />
-                <span className="absolute bottom-1 left-1 h-3 w-3 border-b-2 border-l-2 border-neon-pink" />
-                <span className="absolute bottom-1 right-1 h-3 w-3 border-b-2 border-r-2 border-neon-pink" />
-              </div>
+            <div className="flex h-36 w-36 items-center justify-center rounded-full border border-neon-cyan/25 bg-gradient-to-br from-violet-500/20 to-neon-cyan/10 font-display text-5xl font-black shadow-[0_18px_48px_rgb(0_0_0_/_0.2)]">
+              <span className="text-gradient">{profile.alias.charAt(0)}</span>
             </div>
             <span className="font-mono text-xs text-slate-500">@{profile.alias}</span>
           </Reveal>
@@ -49,7 +38,7 @@ export default function About() {
                 <Reveal key={group.category} delay={0.1 * gi}>
                   <div>
                     <h4 className="mb-3 font-mono text-xs uppercase tracking-widest text-neon-cyan">
-                      {'>'} {group.category}_modules
+                      {group.category}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {group.items.map((item) => (

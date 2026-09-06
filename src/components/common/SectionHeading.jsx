@@ -15,11 +15,11 @@ export default function SectionHeading({ label, title, subtitle }) {
       transition={{ duration: 0.5 }}
       className="mb-12"
     >
-      <div className="section-label flex items-center gap-2">
+      <div className="section-label flex items-center gap-3">
         <span>{label}</span>
-        <span className="h-px w-8 bg-neon-cyan/50" />
+        <span className="h-px w-10 bg-neon-cyan/40" />
       </div>
-      <h2 className="text-3xl font-bold text-white sm:text-4xl">{title}</h2>
+      <h2 className="font-display text-3xl font-bold tracking-[-0.04em] text-white sm:text-4xl">{title}</h2>
       {subtitle && (
         <p className="mt-3 max-w-2xl text-slate-400">{subtitle}</p>
       )}

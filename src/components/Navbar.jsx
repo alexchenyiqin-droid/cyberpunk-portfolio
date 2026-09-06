@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 
 const LINKS = [
-  { id: 'about', label: '关于', code: '/01' },
-  { id: 'projects', label: '项目', code: '/02' },
-  { id: 'collection', label: '收藏', code: '/03' },
-  { id: 'contact', label: '联系', code: '/04' },
+  { id: 'about', label: '关于' },
+  { id: 'projects', label: '项目' },
+  { id: 'collection', label: '收藏' },
+  { id: 'contact', label: '联系' },
 ]
 
-const ACCENTS = ['night', 'ice', 'toxic', 'ember']
+const ACCENTS = ['night', 'ice']
 
 export default function Navbar({ name }) {
   const [scrolled, setScrolled] = useState(false)
@@ -90,26 +90,22 @@ export default function Navbar({ name }) {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'border-b border-neon-pink/30 bg-void-950/85 backdrop-blur-md'
+          ? 'border-b border-white/[0.08] bg-void-950/80 backdrop-blur-xl'
           : 'border-b border-transparent'
       }`}
     >
-      <nav aria-label="主导航" className="container-base flex h-16 items-center justify-between">
-        {/* Logo —— 带方括号的终端风格 */}
+      <nav aria-label="主导航" className="container-base flex h-[4.5rem] items-center justify-between">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="font-display text-base font-bold tracking-wider"
+          className="font-display text-base font-bold tracking-[-0.03em]"
           aria-label="返回顶部"
         >
-          <span className="text-neon-pink">[</span>
           <span className="text-slate-100">{name}</span>
-          <span className="text-neon-cyan">]</span>
-          <span className="cursor-blink ml-1 text-neon-pink">_</span>
+          <span className="ml-1 text-neon-cyan">.</span>
         </button>
 
-        {/* 桌面端导航 —— 带代号，当前区块高亮 + 霓虹换肤切换 */}
-        <div className="hidden items-center gap-7 md:flex">
-          <ul className="flex items-center gap-7">
+        <div className="hidden items-center gap-6 md:flex">
+          <ul className="flex items-center gap-6">
             {LINKS.map((l) => {
               const isActive = active === l.id
               return (
@@ -117,23 +113,14 @@ export default function Navbar({ name }) {
                   <button
                     onClick={() => go(l.id)}
                     aria-current={isActive ? 'true' : undefined}
-                    className={`group font-mono text-sm transition-colors ${
-                      isActive ? 'text-neon-cyan' : 'text-slate-400 hover:text-neon-cyan'
+                    className={`group relative py-2 font-mono text-xs uppercase tracking-[0.14em] transition-colors ${
+                      isActive ? 'text-neon-cyan' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    <span
-                      className={
-                        isActive
-                          ? 'text-neon-pink'
-                          : 'text-neon-pink/60 group-hover:text-neon-pink'
-                      }
-                    >
-                      {l.code}
-                    </span>{' '}
                     {l.label}
                     <span
-                      className={`ml-1 inline-block h-px w-0 bg-neon-cyan align-middle transition-all duration-300 ${
-                        isActive ? 'w-3' : 'group-hover:w-3'
+                      className={`absolute bottom-0 left-0 h-px bg-neon-cyan transition-all duration-300 ${
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
                       }`}
                     />
                   </button>
@@ -142,17 +129,16 @@ export default function Navbar({ name }) {
             })}
           </ul>
 
-          {/* 霓虹换肤切换 */}
           <button
             onClick={cycleAccent}
             aria-label="切换霓虹配色"
-            className="flex items-center gap-2 rounded-sm border border-void-600 bg-void-800/50 px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-slate-300 transition-colors hover:border-neon-cyan/60 hover:text-neon-cyan"
+            className="flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400 transition-colors hover:border-neon-cyan/40 hover:text-neon-cyan"
           >
             <span
               className="h-2.5 w-2.5 rounded-full"
               style={{ background: 'rgb(var(--neon-pink) / 1)' }}
             />
-            {accent}
+            theme
           </button>
         </div>
 
@@ -161,7 +147,7 @@ export default function Navbar({ name }) {
           <button
             onClick={cycleAccent}
             aria-label="切换霓虹配色"
-            className="flex h-9 w-9 items-center justify-center rounded-sm border border-void-600 bg-void-800/50"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.03]"
           >
             <span
               className="h-3 w-3 rounded-full"
@@ -170,7 +156,7 @@ export default function Navbar({ name }) {
           </button>
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="text-neon-cyan"
+            className="text-slate-200 hover:text-neon-cyan"
             aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
             aria-expanded={menuOpen}
           >
@@ -183,7 +169,7 @@ export default function Navbar({ name }) {
 
       {/* 移动端下拉菜单 */}
       {menuOpen && (
-        <ul className="border-b border-neon-pink/30 bg-void-950/95 px-6 py-4 backdrop-blur-md md:hidden">
+        <ul className="border-b border-white/[0.08] bg-void-950/95 px-6 py-4 backdrop-blur-xl md:hidden">
           {LINKS.map((l) => {
             const isActive = active === l.id
             return (
@@ -195,7 +181,7 @@ export default function Navbar({ name }) {
                     isActive ? 'text-neon-cyan' : 'text-slate-300 hover:text-neon-cyan'
                   }`}
                 >
-                  <span className="text-neon-pink/60">{l.code}</span> {l.label}
+                  {l.label}
                 </button>
               </li>
             )
@@ -209,7 +195,7 @@ export default function Navbar({ name }) {
                 className="h-2.5 w-2.5 rounded-full"
                 style={{ background: 'rgb(var(--neon-pink) / 1)' }}
               />
-              切换霓虹：{accent} →
+              切换主题 →
             </button>
           </li>
         </ul>

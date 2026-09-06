@@ -8,7 +8,9 @@ import { ExternalIcon, SearchIcon } from './common/Icons'
 const tabOrder = ['tool', 'miniapp', 'video', 'music', 'image']
 
 export default function Collection() {
-  const [activeTab, setActiveTab] = useState('tool')
+  const [activeTab, setActiveTab] = useState(() => (
+    tabOrder.find((key) => collections.some((item) => item.type === key)) || tabOrder[0]
+  ))
   const [query, setQuery] = useState('')
   const inputRef = useRef(null)
 
@@ -29,9 +31,9 @@ export default function Collection() {
     <section id="collection" className="py-24 sm:py-32">
       <div className="container-base">
         <SectionHeading
-          label="04"
-          title="收藏·信号塔"
-          subtitle="> 大王随手标记的好东西 —— 工具 / 程序 / 影音 / 图像，分类陈列"
+          label="03"
+          title="精选收藏"
+          subtitle="持续收集值得研究、使用与分享的工具和内容。"
         />
 
         {/* 实时搜索框 */}
@@ -47,7 +49,7 @@ export default function Collection() {
                 inputRef.current?.blur()
               }
             }}
-            placeholder="检索信号 // 标题 · 描述 · 来源"
+            placeholder="搜索标题、描述或来源"
             aria-label="搜索收藏"
             className="w-full bg-transparent font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none"
           />
@@ -55,7 +57,7 @@ export default function Collection() {
             <button
               onClick={() => setQuery('')}
               aria-label="清除搜索"
-              className="shrink-0 font-mono text-xs text-slate-500 transition-colors hover:text-neon-pink"
+              className="shrink-0 font-mono text-xs text-slate-400 transition-colors hover:text-neon-cyan"
             >
               [ 清除 ]
             </button>
@@ -75,17 +77,18 @@ export default function Collection() {
                   setActiveTab(key)
                   setQuery('')
                 }}
+                aria-pressed={active}
                 className={`group flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm transition-all duration-200
                   ${active
-                    ? 'bg-neon-pink/15 text-neon-pink shadow-[0_0_12px_rgba(236,72,153,0.2)]'
-                    : 'bg-void-800 text-slate-400 hover:bg-void-700 hover:text-slate-200'
+                    ? 'bg-neon-pink/20 text-slate-100 ring-1 ring-neon-pink/45'
+                    : 'bg-void-800 text-slate-300 hover:bg-void-700 hover:text-white'
                   }`}
               >
                 <span className="text-base">{cat.icon}</span>
                 <span className="font-display text-xs font-semibold uppercase tracking-widest">
                   {cat.label}
                 </span>
-                <span className={`ml-0.5 font-mono text-[11px] ${active ? 'text-neon-pink/60' : 'text-slate-500'}`}>
+                <span className={`ml-0.5 font-mono text-[11px] ${active ? 'text-slate-200' : 'text-slate-400'}`}>
                   ({count})
                 </span>
               </button>
@@ -94,9 +97,9 @@ export default function Collection() {
         </div>
 
         {/* 状态说明 */}
-        <p className="mb-8 font-mono text-[13px] text-slate-500">
+        <p className="mb-8 font-mono text-[13px] text-slate-400" role="status" aria-live="polite">
           {searching
-            ? `// 检索「${query.trim()}」 —— 命中 ${displayed.length} 条信号`
+            ? `检索「${query.trim()}」—— 找到 ${displayed.length} 条结果`
             : categories[activeTab].subtitle}
         </p>
 
@@ -113,10 +116,10 @@ export default function Collection() {
             {displayed.length === 0 ? (
               <div className="col-span-full flex flex-col items-center py-20">
                 <span className="text-5xl opacity-30">📡</span>
-                <p className="mt-4 font-mono text-sm text-slate-600">
+                <p className="mt-4 font-mono text-sm text-slate-400">
                   {searching
-                    ? '[ 未捕获到匹配信号，换个关键词试试 ]'
-                    : '[ 该分类暂无内容，等待大王投喂 ]'}
+                    ? '未找到匹配内容，换个关键词试试。'
+                    : '该分类暂时还没有内容。'}
                 </p>
               </div>
             ) : (

@@ -20,7 +20,7 @@ export default function BlogPost() {
         <Seo title="文章不存在" description="你访问的博客文章不存在。" noindex />
         <p className="font-display text-6xl font-black text-neon-pink animate-pulse-neon">404</p>
         <h1 className="font-display text-2xl font-bold uppercase tracking-wider text-white">
-          信号丢失 — 文档不存在
+          文章不存在
         </h1>
         <button onClick={() => navigate('/')} className="btn-secondary">
           返回首页
@@ -97,13 +97,23 @@ export default function BlogPost() {
                 </code>
               )
             },
-            a: ({ node, href, ...props }) => {
+            a: ({ node, href, children, ...props }) => {
               // 阻止 javascript: / data: 等危险协议
               const safe = /^(https?:|\/|#|mailto:)/.test(href || '')
+              const external = /^https?:\/\//.test(href || '')
               return safe ? (
-                <a href={href} target="_blank" rel="noopener noreferrer" className="text-neon-cyan underline underline-offset-2 hover:text-neon-pink" {...props} />
+                <a
+                  href={href}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                  className="text-neon-cyan underline underline-offset-2 hover:text-neon-pink"
+                  {...props}
+                >
+                  {children}
+                  {external && <span className="sr-only">（在新标签页打开）</span>}
+                </a>
               ) : (
-                <span className="text-neon-cyan underline underline-offset-2 hover:text-neon-pink" {...props} />
+                <span className="text-neon-cyan underline underline-offset-2 hover:text-neon-pink" {...props}>{children}</span>
               )
             },
           }}
