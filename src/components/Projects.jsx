@@ -5,40 +5,21 @@ import SectionHeading from './common/SectionHeading'
 import Reveal from './common/Reveal'
 import { ExternalIcon, GithubIcon, CloseIcon } from './common/Icons'
 
-const toneByAccent = {
-  cyan: 'cyan',
-  pink: 'mixed',
-  violet: 'violet',
-  mixed: 'mixed',
-}
-
-function ProjectVisual({ project, index }) {
-  const tone = toneByAccent[project.accent] || 'cyan'
-  return (
-    <div className="project-visual flex items-end justify-between p-6" data-tone={tone}>
-      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-slate-300/70">
-        Selected work / {String(index + 1).padStart(2, '0')}
-      </span>
-      <span className="font-display text-5xl font-black tracking-[-0.08em] text-white/[0.09]">
-        {String(index + 1).padStart(2, '0')}
-      </span>
-    </div>
-  )
-}
+const numberOf = (index) => String(index + 1).padStart(2, '0')
 
 function ProjectLinks({ project, compact = false }) {
   if (!project.demo && !project.repo) {
-    return <span className="font-mono text-[11px] uppercase tracking-wide text-slate-500">Concept project · links in progress</span>
+    return <span className="rt text-[11px] font-bold uppercase tracking-[0.14em] text-mute">Concept project · links in progress</span>
   }
 
   return (
-    <div className={`flex flex-wrap ${compact ? 'gap-4' : 'gap-3'}`}>
+    <div className={`flex flex-wrap ${compact ? 'gap-4' : 'gap-x-6 gap-y-2'}`}>
       {project.demo && (
         <a
           href={project.demo}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-400 transition-colors hover:text-neon-cyan"
+          className="rt inline-flex items-center gap-1.5 text-sm text-silver transition-colors hover:text-paint"
         >
           <ExternalIcon className="h-4 w-4" /> 在线演示
         </a>
@@ -48,7 +29,7 @@ function ProjectLinks({ project, compact = false }) {
           href={project.repo}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-400 transition-colors hover:text-neon-cyan"
+          className="rt inline-flex items-center gap-1.5 text-sm text-silver transition-colors hover:text-paint"
         >
           <GithubIcon className="h-4 w-4" /> 源码
         </a>
@@ -57,40 +38,42 @@ function ProjectLinks({ project, compact = false }) {
   )
 }
 
-function ProjectCard({ project, index, onOpen }) {
+/** 一条「车道」：描边大号数字 + 标题 + 技术栈 + 简介；悬停整行反白 */
+function ProjectRow({ project, index, onOpen }) {
   return (
-    <Reveal delay={(index % 2) * 0.08}>
-      <motion.article
-        whileHover={{ y: -5 }}
-        transition={{ duration: 0.22 }}
-        className="card group h-full overflow-hidden"
-      >
-        <ProjectVisual project={project} index={index} />
-        <div className="p-6 sm:p-7">
-          <div className="flex items-start justify-between gap-5">
-            <h3 className="font-display text-xl font-bold tracking-[-0.02em] text-white transition-colors group-hover:text-neon-cyan">
-              {project.title}
-            </h3>
-            <button
-              type="button"
-              onClick={(event) => onOpen(project, event.currentTarget)}
-              aria-haspopup="dialog"
-              aria-label={`查看 ${project.title} 详情`}
-              className="mt-0.5 shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 transition-colors hover:text-neon-cyan"
-            >
-              Details ↗
-            </button>
+    <li>
+      <div className="dash-h" aria-hidden="true" />
+      <Reveal delay={(index % 2) * 0.08}>
+        <article className="lane-row">
+          <span className="lane-num giant" aria-hidden="true">
+            {numberOf(index)}
+          </span>
+          <div className="min-w-0 flex-1 basis-80">
+            <h3 className="lane-title rt">{project.title}</h3>
+            <p className="lane-tech rt">{project.tech.join(' / ')}</p>
+            <p className="lane-sum rt">{project.summary}</p>
+            <div className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-3">
+              <button
+                type="button"
+                onClick={(event) => onOpen(project, event.currentTarget)}
+                aria-haspopup="dialog"
+                aria-label={`查看 ${project.title} 详情`}
+                className="rt inline-flex min-h-[44px] items-center text-sm font-black tracking-[0.1em] text-paint"
+              >
+                详情 →
+              </button>
+              <ProjectLinks project={project} />
+            </div>
           </div>
-          <p className="mt-4 text-sm leading-7 text-slate-400">{project.summary}</p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {project.tech.map((tech) => <span key={tech} className="tag">{tech}</span>)}
-          </div>
-        </div>
-        <div className="mx-6 border-t border-white/[0.07] py-4 sm:mx-7">
-          <ProjectLinks project={project} />
-        </div>
-      </motion.article>
-    </Reveal>
+          {/* 有截图才显示：在 projects.json 里给项目加 "image": "/projects/xxx.webp" */}
+          {project.image && (
+            <div className="lane-thumb">
+              <img src={project.image} alt={`${project.title} 截图`} loading="lazy" decoding="async" />
+            </div>
+          )}
+        </article>
+      </Reveal>
+    </li>
   )
 }
 
@@ -146,7 +129,7 @@ function ProjectModal({ project, onClose, index, triggerRef }) {
       onClick={onClose}
       role="presentation"
     >
-      <div className="absolute inset-0 bg-void-950/85 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-void-950/90 backdrop-blur-md" />
       <motion.div
         role="dialog"
         aria-modal="true"
@@ -157,26 +140,24 @@ function ProjectModal({ project, onClose, index, triggerRef }) {
         animate={{ scale: 1, y: 0, opacity: 1 }}
         exit={{ scale: 0.98, y: 12, opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="card relative z-10 my-auto w-full max-w-xl max-h-[calc(100dvh-2rem)] overflow-y-auto"
+        className="sign-frame relative z-10 my-auto max-h-[calc(100dvh-2rem)] w-full max-w-xl overflow-y-auto bg-void-900"
       >
-        <ProjectVisual project={project} index={index} />
         <button
           type="button"
           onClick={onClose}
           ref={closeButtonRef}
           aria-label="关闭项目详情"
-          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.12] bg-void-950/50 text-slate-300 transition-colors hover:border-neon-cyan hover:text-neon-cyan"
+          className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border-2 border-paint/60 text-paint transition-colors hover:bg-paint hover:text-void-900"
         >
           <CloseIcon className="h-4 w-4" />
         </button>
-        <div className="p-7 sm:p-8">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-neon-cyan">Project overview</p>
-          <h3 className="mt-3 font-display text-3xl font-black tracking-[-0.04em] text-white">{project.title}</h3>
-          <p className="mt-5 text-sm leading-7 text-slate-300">{project.summary}</p>
-          <div className="mt-7 flex flex-wrap gap-2">
-            {project.tech.map((tech) => <span key={tech} className="tag">{tech}</span>)}
-          </div>
-          <div className="mt-8 border-t border-white/[0.08] pt-5">
+        <div className="p-8 sm:p-10">
+          <span className="plate">{numberOf(index)}</span>
+          <h3 className="mt-5 pr-12 text-3xl font-black leading-tight text-[#f4f4f2]">{project.title}</h3>
+          <p className="mt-2 text-sm tracking-[0.1em] text-mute">{project.tech.join(' / ')}</p>
+          <p className="mt-6 text-base leading-8 text-silver">{project.summary}</p>
+          <div className="dash-h mt-8" aria-hidden="true" />
+          <div className="pt-5">
             <ProjectLinks project={project} compact />
           </div>
         </div>
@@ -196,19 +177,16 @@ export default function Projects() {
   }, [])
 
   return (
-    <section id="projects" className="py-24 sm:py-32">
-      <div className="container-base">
-        <SectionHeading
-          label="02"
-          title="精选项目"
-          subtitle="围绕产品体验与工程实现的持续探索。点击卡片查看技术构成与可用链接。"
-        />
-        <div className="grid gap-6 md:grid-cols-2">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} onOpen={openProject} />
-          ))}
-        </div>
-      </div>
+    <section id="projects" className="panel">
+      <SectionHeading label="01" en="Work" title="作品" meta={`SELECTED — ${String(projects.length).padStart(2, '0')}`} />
+      <ul className="m-0 list-none p-0">
+        {projects.map((project, index) => (
+          <ProjectRow key={project.id} project={project} index={index} onOpen={openProject} />
+        ))}
+        <li aria-hidden="true">
+          <div className="dash-h" />
+        </li>
+      </ul>
       <AnimatePresence>
         {selected && <ProjectModal project={selected} index={selectedIndex} onClose={closeProject} triggerRef={triggerRef} />}
       </AnimatePresence>

@@ -1,41 +1,23 @@
 import { useEffect, useState } from 'react'
 
+// 顺序即页面上板块的顺序：作品 → 现场 → 关于 → 联系
 const LINKS = [
+  { id: 'projects', label: '作品' },
+  { id: 'collection', label: '现场' },
   { id: 'about', label: '关于' },
-  { id: 'projects', label: '项目' },
-  { id: 'collection', label: '收藏' },
   { id: 'contact', label: '联系' },
 ]
-
-const ACCENTS = ['night', 'ice']
 
 export default function Navbar({ name }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [active, setActive] = useState('about')
-  const [accent, setAccent] = useState(() => {
-    if (typeof window === 'undefined') return 'night'
-    return localStorage.getItem('cyber-accent') || 'night'
-  })
+  const [active, setActive] = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  // 霓虹换肤：同步到 <html data-accent> 并持久化
-  useEffect(() => {
-    document.documentElement.setAttribute('data-accent', accent)
-    try {
-      localStorage.setItem('cyber-accent', accent)
-    } catch (_) {}
-  }, [accent])
-
-  const cycleAccent = () => {
-    const i = ACCENTS.indexOf(accent)
-    setAccent(ACCENTS[(i + 1) % ACCENTS.length])
-  }
 
   // 滚动高亮：区块由懒加载挂载，需在 DOM 新增后重新订阅。
   useEffect(() => {
@@ -90,95 +72,31 @@ export default function Navbar({ name }) {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'border-b border-white/[0.08] bg-void-950/80 backdrop-blur-xl'
+          ? 'border-b border-white/[0.12] bg-void-950/85 backdrop-blur-xl'
           : 'border-b border-transparent'
       }`}
     >
-      <nav aria-label="主导航" className="container-base flex h-[4.5rem] items-center justify-between">
+      <nav aria-label="主导航" className="flex h-[4.5rem] items-center justify-between px-[var(--gutter)]">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="font-display text-base font-bold tracking-[-0.03em]"
+          className="giant inline-flex min-h-[44px] items-center text-[22px] leading-none text-paint"
           aria-label="返回顶部"
         >
-          <span className="text-slate-100">{name}</span>
-          <span className="ml-1 text-neon-cyan">.</span>
+          {name}
         </button>
 
-        <div className="hidden items-center gap-6 md:flex">
-          <ul className="flex items-center gap-6">
-            {LINKS.map((l) => {
-              const isActive = active === l.id
-              return (
-                <li key={l.id}>
-                  <button
-                    onClick={() => go(l.id)}
-                    aria-current={isActive ? 'true' : undefined}
-                    className={`group relative py-2 font-mono text-xs uppercase tracking-[0.14em] transition-colors ${
-                      isActive ? 'text-neon-cyan' : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    {l.label}
-                    <span
-                      className={`absolute bottom-0 left-0 h-px bg-neon-cyan transition-all duration-300 ${
-                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                      }`}
-                    />
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-
-          <button
-            onClick={cycleAccent}
-            aria-label="切换霓虹配色"
-            className="flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400 transition-colors hover:border-neon-cyan/40 hover:text-neon-cyan"
-          >
-            <span
-              className="h-2.5 w-2.5 rounded-full"
-              style={{ background: 'rgb(var(--neon-pink) / 1)' }}
-            />
-            theme
-          </button>
-        </div>
-
-        {/* 移动端：汉堡 + 换肤切换 */}
-        <div className="flex items-center gap-3 md:hidden">
-          <button
-            onClick={cycleAccent}
-            aria-label="切换霓虹配色"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.03]"
-          >
-            <span
-              className="h-3 w-3 rounded-full"
-              style={{ background: 'rgb(var(--neon-pink) / 1)' }}
-            />
-          </button>
-          <button
-            onClick={() => setMenuOpen((v) => !v)}
-            className="text-slate-200 hover:text-neon-cyan"
-            aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
-            aria-expanded={menuOpen}
-          >
-            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              {menuOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M3 12h18M3 6h18M3 18h18" />}
-            </svg>
-          </button>
-        </div>
-      </nav>
-
-      {/* 移动端下拉菜单 */}
-      {menuOpen && (
-        <ul className="border-b border-white/[0.08] bg-void-950/95 px-6 py-4 backdrop-blur-xl md:hidden">
+        <ul className="hidden items-center gap-1 md:flex">
           {LINKS.map((l) => {
             const isActive = active === l.id
             return (
-              <li key={l.id} className="py-2">
+              <li key={l.id}>
                 <button
                   onClick={() => go(l.id)}
                   aria-current={isActive ? 'true' : undefined}
-                  className={`font-mono text-sm ${
-                    isActive ? 'text-neon-cyan' : 'text-slate-300 hover:text-neon-cyan'
+                  className={`inline-flex min-h-[44px] items-center border-b-2 px-4 text-[15px] font-bold transition-colors ${
+                    isActive
+                      ? 'border-paint text-paint'
+                      : 'border-transparent text-silver hover:text-paint'
                   }`}
                 >
                   {l.label}
@@ -186,18 +104,40 @@ export default function Navbar({ name }) {
               </li>
             )
           })}
-          <li className="py-2">
-            <button
-              onClick={cycleAccent}
-              className="flex items-center gap-2 font-mono text-sm text-slate-300 hover:text-neon-cyan"
-            >
-              <span
-                className="h-2.5 w-2.5 rounded-full"
-                style={{ background: 'rgb(var(--neon-pink) / 1)' }}
-              />
-              切换主题 →
-            </button>
-          </li>
+        </ul>
+
+        {/* 移动端：汉堡 */}
+        <button
+          onClick={() => setMenuOpen((v) => !v)}
+          className="flex h-11 w-11 items-center justify-center text-paint md:hidden"
+          aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
+          aria-expanded={menuOpen}
+        >
+          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            {menuOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M3 12h18M3 6h18M3 18h18" />}
+          </svg>
+        </button>
+      </nav>
+
+      {/* 移动端下拉菜单 */}
+      {menuOpen && (
+        <ul className="border-b border-white/[0.12] bg-void-950/95 px-[var(--gutter)] py-3 backdrop-blur-xl md:hidden">
+          {LINKS.map((l) => {
+            const isActive = active === l.id
+            return (
+              <li key={l.id}>
+                <button
+                  onClick={() => go(l.id)}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`flex min-h-[48px] w-full items-center text-lg font-bold ${
+                    isActive ? 'text-paint' : 'text-silver hover:text-paint'
+                  }`}
+                >
+                  {l.label}
+                </button>
+              </li>
+            )
+          })}
         </ul>
       )}
     </header>

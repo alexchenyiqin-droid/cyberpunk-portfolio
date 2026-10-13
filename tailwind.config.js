@@ -4,8 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 赛博朋克调色板：深紫黑底 + 霓虹三色撞色
-        // 改为引用 CSS 变量，支持「霓虹换肤」主题切换（透明度修饰仍可用）
+        // 「单行道」调色板：沥青黑 + 路面油漆白，仅此两色加一档银灰。
+        // 仍引用 CSS 变量；void-* / neon-* 这些旧名字保留，是为了让博客详情页、
+        // 后台等未重做的页面继续可用（它们现在会呈现为黑白灰）。
+        paint: 'rgb(var(--paint) / <alpha-value>)',
+        silver: 'rgb(var(--silver) / <alpha-value>)',
+        mute: 'rgb(var(--mute) / <alpha-value>)',
         void: {
           950: 'rgb(var(--void-950) / <alpha-value>)',
           900: 'rgb(var(--void-900) / <alpha-value>)',
@@ -21,10 +25,11 @@ export default {
         },
       },
       fontFamily: {
-        // 中文用系统字体栈显式承载（零流量，跨平台统一；Orbitron/Rajdhani 仅管拉丁）
-        display: ['Orbitron', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'], // 标题/品牌：科技未来感
-        mono: ['"JetBrains Mono"', 'Menlo', 'monospace'], // 代号/标签
-        sans: ['Rajdhani', 'PingFang SC', 'Microsoft YaHei', 'system-ui', 'sans-serif'], // 正文：略带棱角
+        // 中文用系统字体栈承载（零流量；Archivo 只负责拉丁字母和数字）
+        // display：路面喷漆的宽体斜体，仅装载了斜体面（见 src/main.jsx）
+        display: ['"Archivo Variable"', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'Menlo', 'monospace'], // 代码 / 后台
+        sans: ['PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'system-ui', 'sans-serif'], // 正文
       },
       boxShadow: {
         'neon-pink': '0 0 5px rgb(var(--neon-pink) / 1), 0 0 20px rgb(var(--neon-pink) / 0.53), inset 0 0 8px rgb(var(--neon-pink) / 0.27)',
