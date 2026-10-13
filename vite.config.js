@@ -11,8 +11,8 @@ import path from 'node:path'
  * 在跨境高延迟链路上要多等 1 个 RTT 以上。
  *
  * 注入 preload 后，字体与 CSS 并行下载，消除这段串行等待。
- * 只预载首屏确定会渲染的字体（标题 Orbitron 700 + 正文 Rajdhani 400/600），
- * 其余字重（等宽 JetBrains Mono、Orbitron 900 等）仍按需延迟加载，避免浪费带宽。
+ * 只预载首屏确定会渲染的字体（Archivo 宽体斜体的拉丁子集：名字、板块大标题都用它），
+ * 其余（JetBrains Mono 等）仍按需延迟加载，避免浪费带宽。
  */
 function fontPreloadPlugin() {
   return {
@@ -25,14 +25,13 @@ function fontPreloadPlugin() {
       if (!fs.existsSync(htmlPath) || !fs.existsSync(assetsDir)) return
 
       // 只预载首屏确定会渲染的关键字体：
-      //   Orbitron 700/900 —— Hero 主标题与各级标题（首屏核心视觉）
-      //   Rajdhani 400 —— 正文默认字重
-      // 注意：此列表须与 src/main.jsx 中实际 import 的字重保持一致，
-      // 精简字重后要同步更新，否则预载会匹配不到而静默失效。
+      //   Archivo Variable（wdth-italic，拉丁子集）—— 名字与各板块大标题
+      // 注意：此列表须与 src/main.jsx 中实际 import 的字体保持一致，
+      // 换字体后要同步更新，否则预载会匹配不到而静默失效。
       const targets = fs
         .readdirSync(assetsDir)
         .filter((f) =>
-          /^(orbitron-latin-700|orbitron-latin-900|rajdhani-latin-400)-normal-.*\.woff2$/.test(f)
+          /^archivo-latin-wdth-italic-.*\.woff2$/.test(f)
         )
       if (!targets.length) return
 

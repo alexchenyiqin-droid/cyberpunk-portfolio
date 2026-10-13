@@ -2,36 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Midnight Interface —— 克制的深色基底，紫电与冰蓝仅作信息层级。 */
+/*
+ * 单行道 —— 沥青黑 + 路面油漆白 + 一档银灰。
+ * 设计语言取自首页那张照片：黑色路面、虚线车道、喷在地上的宽体斜体字。
+ * 变量沿用旧名字（void / neon），让没重做的页面（博客详情、后台）继续能用。
+ */
 :root {
-  --void-950: 9 9 11;
-  --void-900: 15 15 20;
-  --void-800: 23 23 31;
-  --void-700: 35 35 48;
-  --void-600: 57 57 73;
-  --neon-pink: 139 92 246;
-  --neon-cyan: 103 232 249;
-  --neon-yellow: 250 204 21;
-  --neon-purple: 129 140 248;
-}
-
-/* 保留轻量主题切换，避免旧的强烈多色模式干扰内容层级。 */
-[data-accent='ice'] {
-  --void-950: 7 14 24;
-  --void-900: 12 23 38;
-  --void-800: 20 35 53;
-  --void-700: 31 48 69;
-  --void-600: 51 65 85;
-  --neon-pink: 96 165 250;
-  --neon-cyan: 165 243 252;
-  --neon-yellow: 186 230 253;
-  --neon-purple: 129 140 248;
+  --void-950: 8 9 10;
+  --void-900: 17 18 20;   /* #111214 沥青 */
+  --void-800: 23 24 27;
+  --void-700: 34 36 40;
+  --void-600: 58 60 66;
+  --paint: 244 244 242;   /* #F4F4F2 路面油漆白 */
+  --silver: 184 187 192;  /* #B8BBC0 正文 */
+  --mute: 154 157 163;    /* #9A9DA3 次要信息 */
+  --neon-pink: 244 244 242;
+  --neon-cyan: 244 244 242;
+  --neon-yellow: 242 195 0;
+  --neon-purple: 184 187 192;
+  --gutter: clamp(20px, 4vw, 56px);
+  --font-giant: 'Archivo Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
 
 @layer base {
   :root { color-scheme: dark; }
 
   html {
+    background: rgb(var(--void-900));
     scroll-behavior: smooth;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -39,144 +36,296 @@
   }
 
   body {
-    @apply bg-void-900 font-sans text-slate-300 antialiased;
-    background-image:
-      radial-gradient(ellipse 70% 46% at 90% -4%, rgb(var(--neon-purple) / 0.12), transparent 72%),
-      radial-gradient(ellipse 48% 35% at 0% 55%, rgb(var(--neon-cyan) / 0.055), transparent 72%);
-    background-attachment: fixed;
+    @apply bg-void-900 font-sans antialiased;
+    color: rgb(var(--silver));
+    overflow-x: hidden;
   }
 
-  ::selection {
-    background: rgb(var(--neon-purple) / 0.75);
-    color: white;
-  }
+  ::selection { background: rgb(var(--paint)); color: rgb(var(--void-900)); }
 
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { @apply bg-void-950; }
   ::-webkit-scrollbar-thumb { @apply rounded-full bg-void-600; }
-  ::-webkit-scrollbar-thumb:hover { background: rgb(var(--neon-purple) / 0.8); }
+  ::-webkit-scrollbar-thumb:hover { background: rgb(var(--paint)); }
+}
+
+/* 沥青颗粒：固定在视口上的一层极淡噪点，不用混合模式，滚动时几乎无开销 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @layer components {
   .container-base { @apply mx-auto w-full max-w-6xl px-6; }
 
-  .text-gradient {
-    @apply bg-gradient-to-r from-violet-400 via-violet-300 to-neon-cyan bg-clip-text text-transparent;
-  }
+  /* 旧页面（博客详情 / 后台）仍在用的组件类，换成黑白灰 */
+  .text-gradient { color: rgb(var(--paint)); }
 
   .card {
-    @apply relative rounded-xl border border-white/[0.09] bg-void-800/75 transition duration-300;
-    box-shadow: 0 16px 48px rgb(0 0 0 / 0.15);
+    @apply relative rounded-xl border border-white/[0.14] bg-void-800/75 transition duration-300;
   }
-  .card:hover {
-    @apply -translate-y-0.5 border-neon-cyan/30 bg-void-800;
-    box-shadow: 0 20px 54px rgb(0 0 0 / 0.24);
-  }
-
+  .card:hover { @apply border-white/30 bg-void-800; }
   .card-corner::before,
   .card-corner::after { content: none; }
 
   .tag {
-    @apply inline-flex items-center rounded-full border border-white/[0.1] bg-white/[0.035] px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-slate-400 transition-colors;
+    @apply inline-flex items-center rounded-full border border-white/[0.18] px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-silver transition-colors;
   }
-  .tag:hover { @apply border-neon-cyan/35 text-neon-cyan; }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-violet-500 px-5 py-3 font-display text-sm font-semibold tracking-wide text-white transition-all duration-300;
-    box-shadow: 0 8px 24px rgb(124 58 237 / 0.22);
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-paint px-5 py-3 font-display text-sm font-semibold tracking-wide text-void-900 transition-all duration-300;
   }
-  .btn-primary:hover {
-    @apply -translate-y-0.5 bg-violet-400;
-    box-shadow: 0 12px 30px rgb(124 58 237 / 0.32);
-  }
+  .btn-primary:hover { @apply -translate-y-0.5 bg-white; }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.14] bg-white/[0.025] px-5 py-3 font-display text-sm font-medium tracking-wide text-slate-200 transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-paint/60 px-5 py-3 font-display text-sm font-semibold tracking-wide text-paint transition-all duration-300;
   }
-  .btn-secondary:hover { @apply -translate-y-0.5 border-neon-cyan/45 bg-neon-cyan/[0.06] text-neon-cyan; }
+  .btn-secondary:hover { @apply -translate-y-0.5 border-paint bg-paint text-void-900; }
 
   .section-label {
-    @apply mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-neon-cyan/80;
+    @apply mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-mute;
   }
 }
 
-.hero-surface {
-  background:
-    linear-gradient(110deg, rgb(var(--void-950) / 0.1), transparent 58%),
-    radial-gradient(ellipse 45% 55% at 88% 50%, rgb(var(--neon-purple) / 0.12), transparent 73%);
+/* ------------------------------------------------------------------ */
+/* 路面语言                                                             */
+/* ------------------------------------------------------------------ */
+
+/* 喷在地上的字：宽体斜体 + 油漆磨损缺口（滤镜见 PaintFilters.jsx） */
+.giant {
+  font-family: var(--font-giant);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  filter: url(#worn-paint);
 }
 
-.hero-orbit {
-  pointer-events: none;
+/* 路牌：双线圆角框。反白时外框变实心，内圈换成沥青色。 */
+.sign-frame {
+  border: 3px solid rgb(var(--paint));
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 5px rgb(var(--void-900)), inset 0 0 0 7px rgb(var(--paint));
+}
+.sign {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 72px;
+  padding: 0 32px;
+  color: rgb(var(--paint));
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.sign:hover,
+.sign:focus-visible {
+  background: rgb(var(--paint));
+  color: rgb(var(--void-900));
+  box-shadow: inset 0 0 0 5px rgb(var(--paint)), inset 0 0 0 7px rgb(var(--void-900));
+}
+.sign:focus-visible { outline-offset: 5px; }
+
+/* 路牌编号牌：白底黑字 */
+.plate {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 8px;
+  background: rgb(var(--paint));
+  color: rgb(var(--void-900));
+  font-family: var(--font-giant);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 125%;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+/* 横向虚线（分隔线）与车道中线 */
+.dash-h {
+  height: 4px;
+  opacity: 0.55;
+  background: repeating-linear-gradient(90deg, rgb(var(--paint)) 0, rgb(var(--paint)) 36px, transparent 36px, transparent 64px);
+}
+.lane { position: relative; display: flex; flex-direction: column; padding-bottom: 120px; }
+.lane-line {
   position: absolute;
-  border: 1px solid rgb(var(--neon-cyan) / 0.17);
-  border-radius: 999px;
-  transform: rotate(-22deg);
-}
-.hero-orbit-large {
-  right: -10rem;
-  top: 10%;
-  width: min(56vw, 760px);
-  aspect-ratio: 1.24;
-  box-shadow: inset 0 0 100px rgb(var(--neon-purple) / 0.08);
-}
-.hero-orbit-small {
-  right: 11%;
-  top: 26%;
-  width: min(27vw, 360px);
-  aspect-ratio: 1;
-  border-color: rgb(var(--neon-purple) / 0.28);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 6px;
+  margin-left: -3px;
+  opacity: 0.85;
+  background-image: linear-gradient(to bottom, rgb(var(--paint)) 0, rgb(var(--paint)) 56px, transparent 56px, transparent 120px);
+  background-size: 6px 120px;
+  background-repeat: repeat-y;
+  animation: lane-flow 2.4s linear infinite;
 }
 
-/* 项目卡片的抽象封面：不依赖虚构截图或额外图片请求。 */
-.project-visual {
+/* 每个板块是一块不透明的沥青，把中线遮住，中线只在板块之间露出来 */
+.panel {
   position: relative;
-  min-height: 12rem;
-  overflow: hidden;
-  border-bottom: 1px solid rgb(255 255 255 / 0.08);
-  background:
-    radial-gradient(circle at 72% 28%, rgb(var(--neon-cyan) / 0.38), transparent 17%),
-    linear-gradient(135deg, rgb(var(--neon-purple) / 0.28), transparent 56%),
-    rgb(var(--void-950) / 0.56);
+  z-index: 1;
+  margin: 0 var(--gutter);
+  padding: 96px 0 72px;
+  background: rgb(var(--void-900));
 }
-.project-visual::after {
-  content: '';
+
+/* 地面箭头 / 斑马线 */
+.roadmark { position: relative; z-index: 1; height: 260px; display: flex; align-items: center; justify-content: center; }
+.roadmark-pad { padding: 16px 36px; background: rgb(var(--void-900)); }
+.zebra { width: 100%; height: 164px; background: rgb(var(--void-900)); }
+.zebra > div {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, rgb(var(--paint)) 0, rgb(var(--paint)) 52px, transparent 52px, transparent 104px);
+  filter: url(#worn-paint);
+}
+
+/* 板块标题 */
+.section-en { margin: 0; font-size: clamp(56px, 12vw, 180px); line-height: 0.9; color: rgb(var(--paint)); }
+.section-zh { font-weight: 900; font-style: italic; font-size: 32px; line-height: 1.2; color: #f4f4f2; }
+.section-meta { font-size: 13px; font-weight: 700; letter-spacing: 0.24em; color: rgb(var(--mute)); }
+
+/* ------------------------------------------------------------------ */
+/* 首屏                                                                 */
+/* ------------------------------------------------------------------ */
+.hero-stage { position: relative; padding-top: 76px; }
+.hero-meta { position: absolute; top: 132px; z-index: 5; }
+.hero-meta-l { left: var(--gutter); }
+.hero-meta-r { right: var(--gutter); text-align: right; }
+.hero-meta p:first-child { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.26em; color: rgb(var(--mute)); }
+.hero-meta p:last-child { margin: 8px 0 0; font-size: 15px; color: rgb(var(--silver)); }
+
+/* 照片四边渐隐进页面的黑色里 */
+.hero-photo {
+  display: block;
+  width: min(600px, 100%);
+  height: auto;
+  aspect-ratio: 1000 / 1808;
+  margin: 0 auto;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 90%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* 名字喷在脚边，左右各一半，被人挡住一半，呼应照片里的 ONE WAY */
+.hero-name { margin: 0; }
+.hero-name > span {
   position: absolute;
-  inset: 17% -10% -38% 24%;
-  border: 1px solid rgb(255 255 255 / 0.13);
-  border-radius: 999px;
-  transform: rotate(-28deg);
+  top: 75%;
+  z-index: 6;
+  font-size: clamp(64px, 10.4vw, 170px);
+  line-height: 0.9;
+  color: rgb(var(--paint));
 }
-.project-visual[data-tone='violet'] {
-  background:
-    radial-gradient(circle at 24% 26%, rgb(var(--neon-purple) / 0.5), transparent 18%),
-    linear-gradient(135deg, rgb(124 58 237 / 0.32), transparent 62%),
-    rgb(var(--void-950) / 0.56);
+.hero-first { right: calc(50% + 8.2vw); text-align: right; animation: lane-in-l 0.9s ease-out both; }
+.hero-last { left: calc(50% + 8.2vw); text-align: left; animation: lane-in-r 0.9s ease-out both; }
+
+.hero-foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px 48px;
+  padding: 24px var(--gutter) 56px;
 }
-.project-visual[data-tone='mixed'] {
-  background:
-    radial-gradient(circle at 76% 23%, rgb(var(--neon-purple) / 0.34), transparent 18%),
-    radial-gradient(circle at 20% 78%, rgb(var(--neon-cyan) / 0.22), transparent 24%),
-    rgb(var(--void-950) / 0.56);
+.hero-tag { margin: 0; max-width: 760px; font-weight: 700; font-size: clamp(26px, 3.6vw, 52px); line-height: 1.35; letter-spacing: -0.01em; color: rgb(var(--silver)); }
+.hero-tag em { font-style: italic; font-weight: 900; color: rgb(var(--paint)); }
+
+/* 滚动字幕：只往前走 */
+.marquee { position: relative; z-index: 2; overflow: hidden; padding-bottom: 28px; background: rgb(var(--void-900)); }
+.marquee .dash-h:first-child { margin-bottom: 28px; }
+.marquee .dash-h:last-child { margin-top: 28px; }
+.marquee-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 56px;
+  line-height: 1.2;
+  color: rgb(var(--paint));
+  animation: lane-drift 32s linear infinite;
 }
+.marquee-track > span { padding-right: 56px; }
+
+/* ------------------------------------------------------------------ */
+/* 作品：一条条车道                                                       */
+/* ------------------------------------------------------------------ */
+.lane-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px 40px;
+  padding: 36px 24px;
+  transition: background-color 0.2s ease;
+}
+.lane-row:hover,
+.lane-row:focus-within { background: rgb(var(--paint)); }
+.lane-row:hover .rt,
+.lane-row:focus-within .rt { color: rgb(var(--void-900)) !important; }
+.lane-row:hover .lane-num,
+.lane-row:focus-within .lane-num { -webkit-text-stroke-color: rgb(var(--void-900)); }
+.lane-row:hover .lane-thumb,
+.lane-row:focus-within .lane-thumb { border-color: rgb(var(--void-900)); }
+.lane-row :focus-visible { outline-color: rgb(var(--void-900)); }
+.lane-num { flex: 0 0 150px; font-size: 96px; line-height: 1; color: transparent; -webkit-text-stroke: 2px rgb(var(--paint)); }
+.lane-title { margin: 0; font-weight: 900; font-size: clamp(28px, 3.1vw, 44px); line-height: 1.2; color: #f4f4f2; }
+.lane-tech { margin: 10px 0 0; font-size: 14px; letter-spacing: 0.1em; color: rgb(var(--mute)); }
+.lane-sum { margin: 14px 0 0; font-size: 17px; line-height: 1.8; color: rgb(var(--silver)); }
+.lane-thumb { flex: 0 0 280px; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid rgb(var(--silver) / 0.4); }
+.lane-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); }
+
+/* ------------------------------------------------------------------ */
+/* 现场 / 关于 / 联系                                                    */
+/* ------------------------------------------------------------------ */
+.mono-media { display: block; width: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15); background: rgb(var(--void-800)); }
+.mail { display: block; font-size: clamp(24px, 4.6vw, 70px); line-height: 1.2; text-transform: none; overflow-wrap: anywhere; color: rgb(var(--paint)); }
+.mail:hover { text-decoration: underline; text-underline-offset: 10px; text-decoration-thickness: 4px; }
+
+/* 404 */
+.notfound { position: relative; display: flex; min-height: 100svh; flex-direction: column; align-items: center; justify-content: center; gap: 32px; padding: 40px 24px; overflow: hidden; text-align: center; }
+.notfound > * { position: relative; z-index: 5; }
+.notfound > .lane-line { position: absolute; z-index: 0; }
+.notfound .cover { background: rgb(var(--void-900)); }
 
 :focus-visible {
-  outline: 2px solid rgb(var(--neon-cyan) / 0.9);
+  outline: 2px solid rgb(var(--paint));
   outline-offset: 3px;
   border-radius: 6px;
 }
 
-main > section:not(:first-child) { border-top: 1px solid rgb(255 255 255 / 0.045); }
+@keyframes lane-flow { from { background-position: 0 0; } to { background-position: 0 120px; } }
+@keyframes lane-drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes lane-in-l { from { opacity: 0; transform: translateX(-56px); } to { opacity: 1; transform: none; } }
+@keyframes lane-in-r { from { opacity: 0; transform: translateX(56px); } to { opacity: 1; transform: none; } }
 
-@media (max-width: 1023px) {
-  .hero-orbit-large { right: -16rem; top: 6%; width: 45rem; }
-  .hero-orbit-small { right: 7%; top: 17%; width: 15rem; }
-}
-
-@media (max-width: 640px) {
-  body { background-attachment: scroll; }
-  .hero-orbit-large { right: -18rem; top: 7%; width: 34rem; }
-  .hero-orbit-small { display: none; }
+/* ------------------------------------------------------------------ */
+/* 窄屏                                                                 */
+/* ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+  .hero-meta { display: none; }
+  .hero-name { display: flex; flex-wrap: wrap; gap: 0 0.3em; padding: 0 var(--gutter); }
+  .hero-name > span { position: static; text-align: left; font-size: clamp(56px, 20vw, 120px); }
+  .marquee-track { font-size: 36px; }
+  .lane-num { flex-basis: 100%; font-size: 72px; }
+  .lane-thumb { flex-basis: 100%; }
+  .panel { padding: 64px 0 48px; }
+  .roadmark { height: 180px; }
+  .zebra { height: 120px; }
+  .sign { min-height: 64px; padding: 0 24px; font-size: 19px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

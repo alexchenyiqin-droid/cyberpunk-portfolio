@@ -5,6 +5,10 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href="https://www.alex9527.xyz/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111214" />
+    <!-- 首屏照片是 LCP：提前下载；背景色先行，避免脚本加载前闪白 -->
+    <link rel="preload" as="image" href="/portrait.webp" type="image/webp" fetchpriority="high" />
+    <style>html{background:#111214}</style>
     <meta
       name="description"
       content="Alex Chen 的全栈开发者作品集：探索技术、构建产品、分享思考。"
