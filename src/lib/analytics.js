@@ -23,6 +23,7 @@ let initialized = false
  * 在生产环境才加载，开发环境 (localhost) 跳过，避免污染统计数据。
  */
 export function initAnalytics() {
+  if (/^\/admin(?:\/|$)/.test(window.location.pathname)) return
   if (initialized) return
   if (!BAIDU_ID || BAIDU_ID === 'YOUR_BAIDU_TONGJI_ID') {
     console.info('[analytics] 百度统计 ID 未配置，跳过加载。请在 src/lib/analytics.js 填入 ID。')
@@ -36,6 +37,7 @@ export function initAnalytics() {
 
   window._hmt = window._hmt || []
   const hm = document.createElement('script')
+  hm.id = 'site-analytics'
   hm.src = `https://hm.baidu.com/hm.js?${BAIDU_ID}`
   hm.async = true
   const s = document.getElementsByTagName('script')[0]
@@ -50,6 +52,7 @@ export function initAnalytics() {
  * @param {string} path 页面路径，如 '/blog/welcome-to-my-blog'
  */
 export function trackPageView(path) {
+  if (/^\/admin(?:\/|$)/.test(path)) return
   if (!window._hmt) return
   // _hmt 是百度统计的命令队列，push 一个数组即触发上报
   window._hmt.push(['_trackPageview', path])

@@ -9,7 +9,7 @@ export default function Contact() {
   const others = profile.socials.filter((s) => s !== mail)
 
   return (
-    <section id="contact" className="panel">
+    <section className="panel">
       <SectionHeading label="04" en="Contact" title="联系" meta="保持联系" />
 
       <Reveal>

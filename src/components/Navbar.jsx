@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // 顺序即页面上板块的顺序：作品 → 现场 → 关于 → 联系
 const LINKS = [
@@ -12,6 +12,8 @@ export default function Navbar({ name }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [active, setActive] = useState('')
+  const pendingNavigation = useRef(() => {})
+  useEffect(() => () => pendingNavigation.current(), [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -64,8 +66,26 @@ export default function Navbar({ name }) {
 
   const go = (id) => {
     setMenuOpen(false)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-    setActive(id)
+    pendingNavigation.current()
+    const target = document.getElementById(id)
+    if (!target) return
+    // Mount the destination and preceding sections before measuring their positions.
+    const sections = [...document.querySelectorAll('[data-lazy-section]')]
+    const preceding = sections.slice(0, sections.indexOf(target) + 1)
+    let timeout
+    const observer = new MutationObserver(scrollWhenReady)
+    function cleanup() { observer.disconnect(); window.clearTimeout(timeout) }
+    function scrollWhenReady() {
+      if (!preceding.every((section) => section.querySelector('section'))) return
+      cleanup()
+      target.scrollIntoView({ behavior: 'smooth' })
+      setActive(id)
+    }
+    pendingNavigation.current = cleanup
+    observer.observe(document.getElementById('main'), { childList: true, subtree: true })
+    timeout = window.setTimeout(cleanup, 15000)
+    window.dispatchEvent(new CustomEvent('load-section', { detail: id }))
+    scrollWhenReady()
   }
 
   return (

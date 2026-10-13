@@ -1,4 +1,4 @@
-import { timingSafeEqual } from 'node:crypto'
+import { readSession, validMutation } from '../../server/admin-auth.js'
 
 const owner = process.env.GITHUB_REPOSITORY_OWNER || 'alexchenyiqin-droid'
 const repo = process.env.GITHUB_REPOSITORY_NAME || 'cyberpunk-portfolio'
@@ -11,15 +11,6 @@ const paths = {
 function send(res, status, payload) {
   res.setHeader('Cache-Control', 'no-store')
   return res.status(status).json(payload)
-}
-
-function isAuthorized(req) {
-  const expected = process.env.ADMIN_PASSWORD
-  const supplied = req.headers.authorization?.replace(/^Bearer\s+/i, '') || ''
-  if (!expected || !supplied) return false
-  const left = Buffer.from(expected)
-  const right = Buffer.from(supplied)
-  return left.length === right.length && timingSafeEqual(left, right)
 }
 
 function github(path, options = {}) {
@@ -76,9 +67,12 @@ function validateProjects(items) {
     const summary = cleanText(item.summary, 500)
     const demo = cleanText(item.demo, 500)
     const repoUrl = cleanText(item.repo, 500)
+    const image = cleanText(item.image, 500)
+    // Only same-site resource paths; reject protocol-relative URLs and traversal.
+    if (image && (!/^\/(?!\/)[a-zA-Z0-9/_-]+\.(?:webp|png|jpe?g|avif)$/i.test(image))) throw new Error('截图需使用站内图片路径，例如 /projects/demo.webp。')
     if (!title || !summary || !validUrl(demo) || !validUrl(repoUrl)) throw new Error('请补全作品信息，并确认链接以 http 或 https 开头。')
     const tech = unique((Array.isArray(item.tech) ? item.tech : []).map((tag) => cleanText(tag, 40)).filter(Boolean)).slice(0, 12)
-    return { id, title, summary, tech, demo, repo: repoUrl, accent: ['cyan', 'pink', 'violet', 'mixed'].includes(item.accent) ? item.accent : 'cyan' }
+    return { id, title, summary, tech, demo, repo: repoUrl, ...(image ? { image } : {}), accent: ['cyan', 'pink', 'violet', 'mixed'].includes(item.accent) ? item.accent : 'cyan' }
   })
 }
 
@@ -130,7 +124,8 @@ async function saveContent(projects, posts) {
 }
 
 export default async function handler(req, res) {
-  if (!isAuthorized(req)) return send(res, 401, { error: '未授权。' })
+  const session = readSession(req)
+  if (!session) return send(res, 401, { error: '登录已过期，请重新登录。' })
   if (req.method === 'GET') {
     try {
       const [projects, posts] = await Promise.all([readContent(paths.projects), readContent(paths.posts)])
@@ -138,6 +133,7 @@ export default async function handler(req, res) {
     } catch (error) { return send(res, 500, { error: error.message || '读取内容失败。' }) }
   }
   if (req.method === 'PUT') {
+    if (!validMutation(req, session)) return send(res, 403, { error: '请求验证失败，请重新登录。' })
     try {
       const projects = validateProjects(req.body?.projects)
       const posts = validatePosts(req.body?.posts)

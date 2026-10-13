@@ -6,7 +6,7 @@ export default function About() {
   const [lead, ...body] = profile.about
 
   return (
-    <section id="about" className="panel">
+    <section className="panel">
       <SectionHeading label="03" en="About" title="关于" meta={profile.name.toUpperCase()} />
 
       <div className="flex flex-wrap items-start gap-x-16 gap-y-12">

@@ -18,12 +18,16 @@ import './index.css'
 function RouteTracker() {
   const location = useLocation()
   useEffect(() => {
+    if (/^\/admin(?:\/|$)/.test(location.pathname)) {
+      // A fresh document removes already-running analytics before admin login.
+      if (document.getElementById('site-analytics')) window.location.reload()
+      return
+    }
+    initAnalytics()
     trackPageView(location.pathname + location.search)
   }, [location])
   return null
 }
-
-initAnalytics()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -26,7 +26,7 @@ export default function Collection() {
   const fallbackPoster = media.find((i) => i.type === 'image')?.url
 
   return (
-    <section id="collection" className="panel">
+    <section className="panel">
       <SectionHeading label="02" en="Live" title="现场" meta={latestDate(collections)} />
 
       {collections.length === 0 && <p className="m-0 text-silver">暂时还没有内容。</p>}

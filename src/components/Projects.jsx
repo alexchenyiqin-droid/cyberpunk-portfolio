@@ -177,7 +177,7 @@ export default function Projects() {
   }, [])
 
   return (
-    <section id="projects" className="panel">
+    <section className="panel">
       <SectionHeading label="01" en="Work" title="作品" meta={`SELECTED — ${String(projects.length).padStart(2, '0')}`} />
       <ul className="m-0 list-none p-0">
         {projects.map((project, index) => (

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Seo from '../components/common/Seo'
 
 const emptyProject = () => ({
-  id: '', title: '', summary: '', tech: [], demo: '', repo: '', accent: 'cyan',
+  id: '', title: '', summary: '', tech: [], demo: '', repo: '', image: '', accent: 'cyan',
 })
 const emptyPost = () => ({
   slug: '', title: '', excerpt: '', date: new Date().toISOString().slice(0, 10), tags: [], content: '',
@@ -34,6 +34,7 @@ function Login({ onLogin, error, busy }) {
   const submit = (event) => {
     event.preventDefault()
     onLogin(password)
+    setPassword('')
   }
 
   return (
@@ -62,6 +63,7 @@ function ProjectEditor({ item, onChange }) {
       <Field label="标识 ID" hint="小写英文、数字与连字符；发布后不要随意改动。"><input className={inputClass} value={item.id} onChange={(e) => set('id', e.target.value)} /></Field>
     </div>
     <Field label="一句话介绍"><textarea className={inputClass} rows="3" value={item.summary} onChange={(e) => set('summary', e.target.value)} /></Field>
+    <Field label="项目截图" hint="先上传图片到仓库 public/projects，再填 /projects/文件名.webp；也支持 png、jpg、avif。"><input className={inputClass} placeholder="/projects/demo.webp" value={item.image || ''} onChange={(e) => set('image', e.target.value)} /></Field>
     <div className="grid gap-5 sm:grid-cols-2">
       <Field label="技术栈" hint="用英文逗号分隔"><input className={inputClass} value={tagsToText(item.tech)} onChange={(e) => set('tech', textToTags(e.target.value))} /></Field>
       <Field label="主题色"><select className={inputClass} value={item.accent} onChange={(e) => set('accent', e.target.value)}><option value="cyan">青色</option><option value="violet">紫色</option><option value="mixed">混合色</option><option value="pink">粉色</option></select></Field>
@@ -88,7 +90,7 @@ function PostEditor({ item, onChange }) {
 }
 
 export default function Admin() {
-  const [password, setPassword] = useState(() => sessionStorage.getItem('admin-password') || '')
+  const [csrf, setCsrf] = useState('')
   const [data, setData] = useState(null)
   const [active, setActive] = useState('projects')
   const [selected, setSelected] = useState(0)
@@ -99,30 +101,45 @@ export default function Admin() {
   const request = async (method, body) => {
     const response = await fetch('/api/admin/content', {
       method,
-      headers: { Authorization: `Bearer ${password}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+      credentials: 'same-origin',
+      headers: { 'X-CSRF-Token': csrf, ...(body ? { 'Content-Type': 'application/json' } : {}) },
       ...(body ? { body: JSON.stringify(body) } : {}),
     })
     const result = await response.json().catch(() => ({}))
-    if (!response.ok) throw new Error(result.error || '请求失败，请稍后重试。')
+    if (!response.ok) {
+      if (response.status === 401) { setData(null); setCsrf('') }
+      throw new Error(result.error || '请求失败，请稍后重试。')
+    }
     return result
   }
 
-  const load = async (candidate = password) => {
+  const load = async (candidate) => {
     setBusy(true); setError(''); setMessage('')
     try {
-      const previous = password
-      if (candidate !== previous) setPassword(candidate)
-      const response = await fetch('/api/admin/content', { headers: { Authorization: `Bearer ${candidate}` } })
+      const login = await fetch('/api/admin/session', {
+        method: candidate === undefined ? 'GET' : 'POST',
+        credentials: 'same-origin',
+        ...(candidate === undefined ? {} : { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: candidate }) }),
+      })
+      const session = await login.json().catch(() => ({}))
+      if (!login.ok) {
+        if (candidate === undefined && login.status === 401) return
+        throw new Error(session.error || '验证失败。')
+      }
+      setCsrf(session.csrf)
+      const response = await fetch('/api/admin/content', { credentials: 'same-origin' })
       const result = await response.json().catch(() => ({}))
       if (!response.ok) throw new Error(result.error || '验证失败。')
-      sessionStorage.setItem('admin-password', candidate)
       setData(result); setSelected(0)
     } catch (err) {
-      sessionStorage.removeItem('admin-password'); setPassword(''); setError(err.message)
+      setCsrf(''); setError(err.message)
     } finally { setBusy(false) }
   }
 
-  useEffect(() => { if (password && !data) load(password) }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    sessionStorage.removeItem('admin-password')
+    load()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const items = useMemo(() => data?.[active] || [], [data, active])
   const current = items[selected]
@@ -143,7 +160,13 @@ export default function Admin() {
       setMessage('已保存至 GitHub，网站正在自动部署。')
     } catch (err) { setError(err.message) } finally { setBusy(false) }
   }
-  const logout = () => { sessionStorage.removeItem('admin-password'); setPassword(''); setData(null); setMessage('') }
+  const logout = async () => {
+    try {
+      const response = await fetch('/api/admin/session', { method: 'DELETE', credentials: 'same-origin', headers: { 'X-CSRF-Token': csrf } })
+      if (!response.ok) throw new Error('退出失败，请重试。')
+      setCsrf(''); setData(null); setMessage(''); setError('')
+    } catch (err) { setError(err.message) }
+  }
 
   if (!data) return <Login onLogin={load} error={error} busy={busy} />
 

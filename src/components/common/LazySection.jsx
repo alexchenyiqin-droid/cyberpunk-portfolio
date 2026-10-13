@@ -11,9 +11,18 @@ function SectionFallback({ minHeight }) {
  * 从而把非首屏区块（及其数据，如博客 posts、收藏数据）从初始 JS 中剥离，
  * 减小首屏体积。不支持 IntersectionObserver 时直接激活，避免白屏。
  */
-export default function LazySection({ children, minHeight = 480, rootMargin = '400px' }) {
+export default function LazySection({ children, id, minHeight = 480, rootMargin = '400px' }) {
   const ref = useRef(null)
   const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    const loadForNavigation = (event) => {
+      const target = document.getElementById(event.detail)
+      if (target && ref.current && ref.current.offsetTop <= target.offsetTop) setActive(true)
+    }
+    window.addEventListener('load-section', loadForNavigation)
+    return () => window.removeEventListener('load-section', loadForNavigation)
+  }, [])
 
   useEffect(() => {
     if (active) return
@@ -40,7 +49,7 @@ export default function LazySection({ children, minHeight = 480, rootMargin = '4
   }, [active, rootMargin])
 
   return (
-    <div ref={ref} style={{ minHeight }}>
+    <div id={id} ref={ref} data-lazy-section style={{ minHeight }}>
       {active ? (
         <Suspense fallback={<SectionFallback minHeight={minHeight} />}>
           {children}

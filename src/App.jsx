@@ -44,13 +44,13 @@ function Home() {
         <div className="lane">
           <div className="lane-line" aria-hidden="true" />
           <RoadMark kind="arrow" />
-          <LazySection minHeight={520}><Projects /></LazySection>
+          <LazySection id="projects" minHeight={520}><Projects /></LazySection>
           <RoadMark kind="arrow" />
-          <LazySection minHeight={480}><Collection /></LazySection>
+          <LazySection id="collection" minHeight={480}><Collection /></LazySection>
           <RoadMark kind="arrow" />
-          <LazySection minHeight={420}><About /></LazySection>
+          <LazySection id="about" minHeight={420}><About /></LazySection>
           <RoadMark kind="zebra" />
-          <LazySection minHeight={420}><Contact /></LazySection>
+          <LazySection id="contact" minHeight={420}><Contact /></LazySection>
         </div>
       </main>
       <Footer />
