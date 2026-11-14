@@ -1,3 +1,6 @@
+/* 首屏背景色：移动到外部 CSS，避免 CSP 'unsafe-inline' 被阻拦 */
+html { background: #111214; }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
