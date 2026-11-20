@@ -1,7 +1,6 @@
 {
   "rewrites": [
-    { "source": "/blog/:slug", "destination": "/" },
-    { "source": "/admin", "destination": "/" }
+    { "source": "/blog/:slug", "destination": "/" }
   ],
   "headers": [
     {
